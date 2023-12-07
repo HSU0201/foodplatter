@@ -48,16 +48,16 @@
                                                 id="exampleInputEmail" aria-describedby="emailHelp"
                                                 placeholder="請輸入電子郵件地址...">
                                         </div>
-                                        <a href="login.html" class="btn btn-primary btn-user btn-block">
+                                        <a href="login.php" class="btn btn-primary btn-user btn-block">
                                             重新設密碼
                                         </a>
                                     </form>
                                     <hr>
                                     <div class="text-center">
-                                        <a class="small" href="register.html">建立一個帳戶！</a>
+                                        <a class="small" href="register.php">建立一個帳戶！</a>
                                     </div>
                                     <div class="text-center">
-                                        <a class="small" href="login.html">已經有帳戶？登入!</a>
+                                        <a class="small" href="login.php">已經有帳戶？登入!</a>
                                     </div>
                                 </div>
                             </div>

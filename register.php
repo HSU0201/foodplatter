@@ -61,17 +61,17 @@
                                             id="exampleRepeatPassword" placeholder="重設密碼">
                                     </div>
                                 </div>
-                                <a href="login.html" class="btn btn-primary btn-user btn-block">
+                                <a href="login.php" class="btn btn-primary btn-user btn-block">
                                     重新設帳戶
                                 </a>
                                 
                             </form>
                             <hr>
                             <div class="text-center">
-                                <a class="small" href="forgot-password.html">忘記密碼？</a>
+                                <a class="small" href="forgot-password.php">忘記密碼？</a>
                             </div>
                             <div class="text-center">
-                                <a class="small" href="login.html">已經有帳戶？登入!</a>
+                                <a class="small" href="login.php">已經有帳戶？登入!</a>
                             </div>
                         </div>
                     </div>

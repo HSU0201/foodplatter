@@ -41,7 +41,7 @@
               <div class="error mx-auto" data-text="404">404</div>
               <p class="lead text-gray-800 mb-5">Page Not Found 找不到網頁</p>
               <p class="text-gray-500 mb-0">看起來你走錯地方了...</p>
-              <a href="index.html">&larr; 返回</a>
+              <a href="index.php">&larr; 返回</a>
             </div>
           </div>
           <!-- /.container-fluid -->
@@ -100,7 +100,7 @@
             >
               取消
             </button>
-            <a class="btn btn-primary" href="login.html">登出</a>
+            <a class="btn btn-primary" href="login.php">登出</a>
           </div>
         </div>
       </div>

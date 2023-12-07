@@ -57,17 +57,17 @@
                                                 <label class="custom-control-label" for="customCheck">記住帳號</label>
                                             </div>
                                         </div>
-                                        <a href="index.html" class="btn btn-primary btn-user btn-block">
+                                        <a href="index.php" class="btn btn-primary btn-user btn-block">
                                             登入
                                         </a>
                                         
                                     </form>
                                     <hr>
                                     <div class="text-center">
-                                        <a class="small" href="forgot-password.html">忘記密碼?</a>
+                                        <a class="small" href="forgot-password.php">忘記密碼?</a>
                                     </div>
                                     <div class="text-center">
-                                        <a class="small" href="register.html">創建帳戶!</a>
+                                        <a class="small" href="register.php">創建帳戶!</a>
                                     </div>
                                 </div>
                             </div>

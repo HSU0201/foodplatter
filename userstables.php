@@ -43,7 +43,7 @@
         <!--側邊欄 -品牌-->
         <a
           class="sidebar-brand d-flex align-items-center justify-content-center"
-          href="index.html"
+          href="index.php"
         >
           <div class="sidebar-brand-icon rotate-n-15">
             <i class="bi bi-slack"></i>
@@ -56,7 +56,7 @@
 
         <!--導航項目 -首頁-->
         <li class="nav-item active">
-          <a class="nav-link" href="index.html">
+          <a class="nav-link" href="index.php">
             <i class="fas fa-fw fa-tachometer-alt"></i>
             <span>首頁</span>
           </a>
@@ -70,21 +70,21 @@
 
         <!--導航項目 -表格-->
         <li class="nav-item">
-          <a class="nav-link" href="shopstables.html">
+          <a class="nav-link" href="shopstables.php">
             <i class="bi bi-shop"></i>
             <span>商家管理</span></a
           >
         </li>
         <!--導航項目 -表格-->
         <li class="nav-item">
-          <a class="nav-link" href="certificationtables.html">
+          <a class="nav-link" href="certificationtables.php">
             <i class="bi bi-patch-exclamation"></i>
             <span>認證管理</span></a
           >
         </li>
         <!--導航項目 -表格-->
         <li class="nav-item">
-          <a class="nav-link" href="userstables.html">
+          <a class="nav-link" href="userstables.php">
             <i class="bi bi-person-rolodex"></i>
             <span>會員管理</span></a
           >
@@ -104,7 +104,7 @@
             data-target="#collapseCoupon"
             aria-expanded="true"
             aria-controls="collapseCoupon"
-            href="coupons.html"
+            href="coupons.php"
           >
             <i class="bi bi-ticket-perforated"></i>
             <span>優惠卷管理</span>
@@ -117,9 +117,9 @@
           >
             <div class="bg-white py-2 collapse-inner rounded">
               <h6 class="collapse-header">優惠卷管理</h6>
-              <a class="collapse-item" href="coupons.html">優惠卷</a>
-              <a class="collapse-item" href="coupons-add.html">優惠卷新增</a>
-              <a class="collapse-item" href="coupons-edit.html"
+              <a class="collapse-item" href="coupons.php">優惠卷</a>
+              <a class="collapse-item" href="coupons-add.php">優惠卷新增</a>
+              <a class="collapse-item" href="coupons-edit.php"
                 >優惠卷修改、刪除</a
               >
             </div>
@@ -410,7 +410,7 @@
             >
               取消
             </button>
-            <a class="btn btn-primary" href="login.html">登出</a>
+            <a class="btn btn-primary" href="login.php">登出</a>
           </div>
         </div>
       </div>
