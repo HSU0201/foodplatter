@@ -152,7 +152,11 @@
               <i class="fa fa-bars"></i>
             </button>
             <!-- 返回優惠卷列表 -->
-            <a type="button" class="btn btn-secondary mx-3" href="coupons.php"
+            <a 
+            type="button" 
+            class="btn btn-secondary mx-3" href="coupons.php"
+            data-toggle="modal"
+            data-target="#returnModal"
               >回上一頁</a
             >
 
@@ -390,6 +394,46 @@
               取消
             </button>
             <a class="btn btn-primary" href="login.php">登出</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- 登出彈出視窗結束 -->
+
+<!-- 返回上一頁彈出視窗 -->
+<div
+      class="modal fade"
+      id="returnModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">確定要離開嗎?</h5>
+            <button
+              class="close"
+              type="button"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            如果您準備結束修改，請選擇下面的退出。
+          </div>
+          <div class="modal-footer">
+            <button
+              class="btn btn-secondary"
+              type="button"
+              data-dismiss="modal"
+            >
+              取消
+            </button>
+            <a class="btn btn-primary" href="coupons.php">回上一頁</a>
           </div>
         </div>
       </div>

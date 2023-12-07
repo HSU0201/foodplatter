@@ -1,3 +1,80 @@
+<?php
+require_once("foodplatter_connect.php");
+
+$sql = "SELECT * FROM coupon WHERE valid=1";
+$result = $conn->query($sql);
+
+// 檢查查詢是否成功
+if (!$result) {
+    die("Query failed: " . $conn->error);
+}
+
+// 初始化一個空數組，用於存儲所有行的數據
+$rows = array();
+
+// 使用循環遍歷結果集，將每一行的數據存儲到$rows數組中
+while ($row = $result->fetch_assoc()) {
+    $rows[] = $row;
+    // 現在$rows數組包含了所有查詢結果的行數據
+}
+
+// 取得總總優惠卷數量
+$totalCoupons = $result->num_rows;
+
+// 每頁顯示的用戶數
+$perPage = 20;
+
+// 進行無條件進位的相除操作，計算總頁數
+$pageCount = ceil($totalCoupons / $perPage);
+
+// ----------------------------------------------------------------------------------------
+// 檢查是否有 GET 請求中的 "search" 參數
+if (isset($_GET["search"])) {
+  // 如果有，取得 "search" 參數的值
+  $search = $_GET["search"];
+
+  // 使用 "search" 參數來篩選查詢
+  $sql = "SELECT * FROM coupon WHERE name LIKE '%$search%'AND valid=1";
+}
+// 檢查是否有分頁參數
+elseif (isset($_GET["page"]) && isset($_GET["order"])) {
+  // 取得分頁參數及計算起始項目索引
+  $page = $_GET["page"];
+  $order = $_GET["order"];
+  switch ($order) {
+      case 1:
+          $orderSql = "id ASC";
+          break;
+      case 2:
+          $orderSql = "id DESC";
+          break;
+      case 3:
+          $orderSql = "name ASC";
+          break;
+      case 4:
+          $orderSql = "name DESC";
+          break;
+      default :
+      $orderSql="id ASC";
+  }
+
+  $starItem = ($page - 1) * $perPage;
+
+  // 如果沒有 "search" 參數，使用基本的查詢
+  $sql = "SELECT * FROM users WHERE valid = 1 ORDER BY $orderSql  LIMIT $starItem,$perPage";
+  // 並不包含第一筆資料，而是包含從第二筆資料開始的$perPage筆資料。
+  // LIMIT [從哪個參數開始],[獲取幾筆資料]
+  // ASC 升冪排序 
+  //軟刪除方法：先去資料庫開一個名為valid欄位，將所有的都改成1，如果是0代表被軟刪除掉，就查不到他
+}
+// 如果沒有搜尋參數也沒有分頁參數，顯示第一頁的結果
+else {
+  $page = 1;
+  $order = 1;
+  $sql = "SELECT * FROM users WHERE valid = 1 ORDER BY id ASC LIMIT 0,$perPage";
+}
+
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -183,7 +260,13 @@
               </form>
 
               <!-- 人數 -->
-              <div class="mx-5">共5人</div>
+              <div class="mx-5">
+                <?php if (isset($_GET["search"])) : ?>
+                    搜尋<?= $_GET["search"] ?>的結果,
+                <?php endif; ?>
+                共<?= $totalCoupons ?>張
+
+            </div>
             </div>
 
             <!--頂欄中級-->
@@ -278,7 +361,7 @@
                           所有優惠卷
                         </div>
                         <div class="h5 mb-0 font-weight-bold text-gray-800">
-                          20,000
+                          <?=$totalCoupons?>
                         </div>
                       </div>
                       <div class="col-auto">
@@ -418,11 +501,12 @@
               <div class="overflow-auto table table-responsive">
                 <table class="table table-bordered text-nowrap table-striped">
                   <thead>
+                    
                     <tr>
                       <th class="align-middle text-center">ID</th>
                       <th class="align-middle text-center">名稱</th>
                       <th class="align-middle text-center">優惠卷介紹</th>
-                      <th class="align-middle text-center">優惠卷代碼</th>
+                      <th class="align-middle text-center">代碼</th>
                       <th class="align-middle text-center">優惠種類</th>
                       <th class="align-middle text-center">面額</th>
                       <th class="align-middle text-center">開始日期</th>
@@ -434,28 +518,30 @@
                       <th class="align-middle text-center">最後更新</th>
                       <th></th>
                     </tr>
+                    
                   </thead>
                   <tbody>
+                  <?php foreach($rows as $row):?>
                     <tr>
-                      <td class="align-middle text-center">22</td>
-                      <td class="align-middle text-center">打卡優惠</td>
+                      <td class="align-middle text-center"><?=$row["coupon_id"]?></td>
+                      <td class="align-middle text-center"><?=$row["coupon_name"]?></td>
                       <td class="align-middle text-wrap">
-                        設立外帶自取點，允許顧客在特定地點自取並享受折扣。
+                      <?=$row["coupon_introduce"]?>
                       </td>
-                      <td class="align-middle text-wrap">CID7a2G4b8</td>
-                      <td class="align-middle text-center">百分比</td>
-                      <td class="align-middle text-center">88%</td>
-                      <td class="align-middle text-wrap">2023-12-01</td>
-                      <td class="align-middle text-wrap">2023-12-30</td>
-                      <td class="align-middle text-center">10</td>
-                      <td class="align-middle text-center">500</td>
-                      <td class="align-middle text-center">早餐店</td>
-                      <td class="align-middle text-center">可使用</td>
-                      <td class="align-middle text-wrap">2023-12-06</td>
+                      <td class="align-middle text-wrap"><?=$row["coupon_code"]?></td>
+                      <td class="align-middle text-center"><?=$row["coupon_type"]?></td>
+                      <td class="align-middle text-center"><?=$row["coupon_discount"]?></td>
+                      <td class="align-middle text-wrap"><?=$row["coupon_start"]?></td>
+                      <td class="align-middle text-wrap"><?=$row["coupon_exp"]?></td>
+                      <td class="align-middle text-center"><?=$row["coupon_max_count"]?></td>
+                      <td class="align-middle text-center"><?=$row["modified_at"]?></td>
+                      <td class="align-middle text-center"><?=$row["created_at"]?></td>
+                      <td class="align-middle text-center"><?=$row["coupon_name"]?></td>
+                      <td class="align-middle text-wrap"><?=$row["modified_at"]?></td>
                       <td class="align-middle text-center">
                         <a
                           class="btn btn-outline-dark mx-1"
-                          href="#"
+                          href="coupons-edit.php"
                           title="修改優惠卷"
                           ><i class="bi bi-pencil-square"></i
                         ></a>
@@ -467,6 +553,7 @@
                         ></a>
                       </td>
                     </tr>
+                    <?php endforeach;?>
                   </tbody>
                 </table>
               </div>
