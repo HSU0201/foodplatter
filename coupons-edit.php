@@ -1,12 +1,12 @@
 <?php
 // 檢查是否存在 GET 參數 "id"
-if (!isset($_GET["id"])) {
+if (!isset($_GET["coupon_id"])) {
   // 如果不存在，將使用者重新導向到 coupons.php
   header("location:coupons.php");
 }
 
 // 從 GET 參數中獲取 id
-$id = $_GET["id"];
+$id = $_GET["coupon_id"];
 
 // 引入與資料庫連接的文件（假設是 foodplatter_connect.php）
 require("foodplatter_connect.php");

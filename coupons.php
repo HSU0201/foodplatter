@@ -199,9 +199,9 @@ $result = $conn->query($sql);
           <div class="d-flex align-items-center">
             <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
               <div class="input-group">
-                <input type="text" class="form-control bg-light small" placeholder="搜尋優惠卷" aria-describedby="basic-addon2" name="search"/>
+                <input type="text" class="form-control bg-light small" placeholder="搜尋優惠卷" aria-describedby="basic-addon2" name="search" />
                 <div class="input-group-append">
-                  <button class="btn btn-primary"  type="submit">
+                  <button class="btn btn-primary" type="submit">
                     <i class="fas fa-search fa-sm"></i>
                   </button>
                 </div>
@@ -393,7 +393,7 @@ $result = $conn->query($sql);
             $rows = $result->fetch_all(MYSQLI_ASSOC);
             // var_dump($rows);
             ?>
-        </div>
+          </div>
 
           <?php if ($couponCount > 0) : ?>
             <!-- DataTales Example -->
@@ -442,8 +442,8 @@ $result = $conn->query($sql);
                         <td class="align-middle text-center"><?= $row["coupon_name"] ?></td>
                         <td class="align-middle text-wrap"><?= $row["modified_at"] ?></td>
                         <td class="align-middle text-center">
-                          <a class="btn btn-outline-dark mx-1" href="coupons-edit.php?id=<?= $row["coupon_id"] ?>" title="修改優惠卷"><i class="bi bi-pencil-square"></i></a>
-                          <a class="btn btn-outline-danger mx-1" href="#" title="刪除優惠卷"><i class="bi bi-trash"></i></a>
+                          <a class="btn btn-outline-dark mx-1" href="coupons-edit.php?coupon_id=<?= $row["coupon_id"] ?>" title="修改優惠卷"><i class="bi bi-pencil-square"></i></a>
+                          <a class="btn btn-outline-danger mx-1" href="doDeleteCoupon.php?coupon_id=<?= $row["coupon_id"] ?>" title="刪除優惠卷"><i class="bi bi-trash"></i></a>
                         </td>
                       </tr>
                     <?php endforeach; ?>
