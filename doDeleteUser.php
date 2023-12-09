@@ -8,7 +8,7 @@ if (!isset($_GET["user_id"])) {
 
 $id = $_GET["user_id"];
 
-$sql = "UPDATE user SET user_valid='0' WHERE user_id=$id";
+$sql = "UPDATE users SET user_valid='0' WHERE user_id=$id";
 // echo $sql;
 // exit;
 

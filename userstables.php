@@ -2,12 +2,12 @@
 // 引入與資料庫連接的文件
 require_once("foodplatter_connect.php");
 
-// 計算總商家數
+// 計算總會員數
 $sqlTotal = "SELECT * FROM users WHERE user_valid=1";
 $resultTotal = $conn->query($sqlTotal);
-// 取得總商家數量
+// 取得總會員數量
 $totalusers = $resultTotal->num_rows;
-// 每頁顯示的商家數
+// 每頁顯示的會員數
 $perPage = 10;
 // 進行無條件進位的相除操作，計算總頁數
 $pageCount = ceil($totalusers / $perPage);
@@ -316,18 +316,44 @@ $result = $conn->query($sql);
                         <td class="align-middle text-center"><?= $row["user_email"] ?></td>
                         <td class="align-middle text-center">0<?= $row["user_phone"] ?></td>
                         <td class="align-middle text-wrap">
-                        <?= $row["user_address"] ?>
+                          <?= $row["user_address"] ?>
                         </td>
                         <td class="align-middle text-center">
-                        <?= $row["credit_card"] ?>
+                          <?= $row["credit_card"] ?>
                         </td>
                         <td class="align-middle text-center"><?= $row["created_at"] ?></td>
                         <td class="align-middle text-center"><?= $row["modified_at"] ?></td>
                         <td class="align-middle text-center">
                           <a class="btn btn-outline-dark mx-1" href="#" title="修改會員資料"><i class="bi bi-pencil-square"></i></a>
-                          <a class="btn btn-outline-danger mx-1" href="#" title="刪除會員資料"><i class="bi bi-trash"></i></a>
+                          <!-- 刪除按鈕，觸發刪除確認視窗 -->
+                          <a class="btn btn-outline-danger mx-1" title="刪除會員資料" type="button" data-toggle="modal" data-target="#exampleModalLong"><i class="bi bi-trash"></i></a>
                         </td>
                       </tr>
+                      <!-- 刪除彈出視窗 -->
+                      <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="deletetable" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="deletetable">移除會員</h5>
+                              <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                              </button>
+                            </div>
+                            <div class="modal-body">
+                              確認要移除會員嗎?
+                            </div>
+                            <div class="modal-footer">
+                              <a class="btn btn-secondary" type="button" data-dismiss="modal">
+                                取消
+                              </a>
+                              <a class="btn btn-primary" href="doDeleteUser.php?user_id=<?= $row["user_id"] ?>">
+                                移除
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- 刪除彈出視窗結束 -->
                     <?php endforeach; ?>
                   </tbody>
                 </table>
@@ -351,11 +377,11 @@ $result = $conn->query($sql);
                 <?php endif; ?>
                 <!-- 分頁列結束 -->
               </div>
-              <!-- 商家列表結束 -->
+              <!-- 會員列表結束 -->
             </div>
           <?php else : ?>
-            <!-- 若無商家資料則顯示訊息 -->
-            目前無此商家
+            <!-- 若無會員資料則顯示訊息 -->
+            目前無此會員
           <?php endif; ?>
         </div>
         <!-- 01 -->

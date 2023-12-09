@@ -83,12 +83,6 @@ $result = $conn->query($sql);
   <link href="css/sb-admin-2.css" rel="stylesheet" />
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css" />
-  <script>
-    function submitForm() {
-      // 触发隐藏的提交按钮点击事件
-      $('#hiddenSubmitButton').click();
-    }
-  </script>
 </head>
 
 <body id="page-top">
