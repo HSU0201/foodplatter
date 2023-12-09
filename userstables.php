@@ -51,7 +51,7 @@
           <div class="sidebar-brand-text mx-3">foodplatter</div>
         </a>
 
-        <!--分音器-->
+        <!--分隔線-->
         <hr class="sidebar-divider my-0" />
 
         <!--導航項目 -首頁-->
@@ -62,7 +62,7 @@
           </a>
         </li>
 
-        <!--分音器-->
+        <!--分隔線-->
         <hr class="sidebar-divider" />
 
         <!--標題-->
@@ -90,7 +90,7 @@
           >
         </li>
 
-        <!--分音器-->
+        <!--分隔線-->
         <hr class="sidebar-divider" />
 
         <!--標題-->
@@ -126,7 +126,7 @@
           </div>
         </li>
 
-        <!--分音器-->
+        <!--分隔線-->
         <hr class="sidebar-divider d-none d-md-block" />
 
         <!--側邊欄切換器（側邊欄）-->
