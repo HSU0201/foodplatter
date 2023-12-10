@@ -8,7 +8,7 @@ if (!isset($_GET["shop_id"])) {
 
 $id = $_GET["shop_id"];
 
-$sql = "UPDATE shopinfo SET shop_valid='0' WHERE shop_id=$id";
+$sql = "UPDATE shopinfo SET shop_valid='0', certified='2' WHERE shop_id=$id";
 // echo $sql;
 // exit;
 

@@ -1,6 +1,6 @@
 <?php
 // 引入與資料庫連接的文件
-require_once("./foodplatter_connect.php");
+require_once("../foodplatter_connect.php");
 
 // 檢查是否有 POST 參數 "id"
 if (!isset($_POST["coupon_id"])) {
@@ -48,4 +48,4 @@ if ($conn->query($sql) === TRUE) {
 $conn->close();
 
 // 重新導向到優惠卷列表頁面
-header("location:./coupons.php");
+header("location:../coupons.php");

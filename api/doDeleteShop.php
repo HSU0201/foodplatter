@@ -1,5 +1,5 @@
 <?php
-require_once("./foodplatter_connect.php");
+require_once("../foodplatter_connect.php");
 
 if (!isset($_GET["shop_id"])) {
     echo "請循正常管道進入此頁";
@@ -20,4 +20,4 @@ if ($conn->query($sql) === TRUE) {
 
 $conn->close();
 
-header("location:./shopstables.php");
+header("location:../shopstables.php");

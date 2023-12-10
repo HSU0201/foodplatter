@@ -3,7 +3,7 @@
 require_once("foodplatter_connect.php");
 
 // 計算總商家數
-$sqlTotal = "SELECT * FROM shopinfo WHERE shop_valid=1";
+$sqlTotal = "SELECT * FROM shopinfo WHERE shop_valid=1 AND certified=1";
 $resultTotal = $conn->query($sqlTotal);
 // 取得總商家數量
 $totalshops = $resultTotal->num_rows;
@@ -19,7 +19,7 @@ if (isset($_GET["search"])) {
   $search = $_GET["search"];
 
   // 使用 "search" 參數來篩選查詢
-  $sql = "SELECT * FROM shopinfo WHERE shop_name LIKE '%$search%' AND shop_valid=1";
+  $sql = "SELECT * FROM shopinfo WHERE shop_name LIKE '%$search%' AND shop_valid=1 AND certified=1";
 }
 // 檢查是否有分頁參數
 elseif (isset($_GET["page"]) && isset($_GET["order"])) {
@@ -46,7 +46,7 @@ elseif (isset($_GET["page"]) && isset($_GET["order"])) {
   $startItem = ($page - 1) * $perPage;
 
   // 如果沒有 "search" 參數，使用基本的查詢
-  $sql = "SELECT * FROM shopinfo WHERE shop_valid = 1 ORDER BY $orderSql LIMIT $startItem, $perPage";
+  $sql = "SELECT * FROM shopinfo WHERE shop_valid = 1 AND certified=1 ORDER BY $orderSql LIMIT $startItem, $perPage";
   // 並不包含第一筆資料，而是包含從第二筆資料開始的 $perPage 筆資料。
   // LIMIT [從哪個參數開始],[獲取幾筆資料]
   // ASC 升冪排序 
@@ -56,7 +56,7 @@ elseif (isset($_GET["page"]) && isset($_GET["order"])) {
 else {
   $page = 1;
   $order = 1;
-  $sql = "SELECT * FROM shopinfo WHERE shop_valid = 1 ORDER BY shop_id ASC LIMIT 0, $perPage";
+  $sql = "SELECT * FROM shopinfo WHERE shop_valid = 1 AND certified=1 ORDER BY shop_id ASC LIMIT 0, $perPage";
 }
 
 // 執行 SQL 查詢，並將結果存儲在 $result 變數中
@@ -225,7 +225,7 @@ $result = $conn->query($sql);
               <?php if (isset($_GET["search"])) : ?>
                 搜尋 <p class="text-success"> <?= $_GET["search"] ?> </p> 的結果,
               <?php endif; ?>
-              共<?= $shopCount ?>家
+              共<?= $totalshops ?>家
             </div>
           </div>
 
@@ -345,19 +345,53 @@ $result = $conn->query($sql);
                           <img src="img/shop/<?= $row["shop_img"] ?>" style="width: 30px" alt="" />
                         </td>
                         <td class="align-middle text-center"><?= $row["shop_name"] ?></td>
-                        <td class="align-middle text-center"><?= $row["main_category"] ?></td>
-                        <td class="align-middle text-center"><?= $row["sub_category"] ?></td>
+                        <td class="align-middle text-center">
+                          <?php
+                          // 獲取主類別值
+                          $mainCategory = $row["main_category"];
+
+                          // 定義主類別到文本的映射
+                          $mainCategoryMapping = [
+                            1 => "中式",
+                            2 => "西式",
+                            3 => "異式",
+                          ];
+
+                          // 輸出主類別文本，如果未知則輸出默認值
+                          echo isset($mainCategoryMapping[$mainCategory]) ? $mainCategoryMapping[$mainCategory] : "未知類型";
+                          ?>
+                        </td>
+                        <td class="align-middle text-center">
+                          <?php
+                          // 獲取子類別值
+                          $subCategory = $row["sub_category"];
+
+                          // 定義子類別到文本的映射
+                          $subCategoryMapping = [
+                            1 => ["中式" => "中台", "西式" => "速食", "異式" => "印度菜"],
+                            2 => ["中式" => "日菜", "西式" => "麵包", "異式" => "墨西哥菜"],
+                            3 => ["中式" => "韓菜", "西式" => "義菜", "異式" => "越菜"],
+                            4 => ["中式" => "港菜", "西式" => "法菜", "異式" => "泰菜"],
+                          ];
+
+                          // 輸出子類別文本，如果未知則輸出默認值
+                          echo isset($subCategoryMapping[$subCategory][$mainCategoryMapping[$mainCategory]]) ? $subCategoryMapping[$subCategory][$mainCategoryMapping[$mainCategory]] : "未知類型";
+                          ?>
+                        </td>
+
+
                         <td class="align-middle text-center"><?= $row["shop_tax"] ?></td>
                         <td class="align-middle text-center"><?= $row["shop_email"] ?></td>
                         <td class="align-middle text-center">0<?= $row["shop_tel"] ?></td>
                         <td class="align-middle text-wrap">
-                          <?= $row["address"] ?></td>
+                          <?= $row["address"] ?>
+                        </td>
                         <td class="align-middle text-center"><?= $row["bank_account"] ?></td>
                         <td class="align-middle text-center"><?= $row["modified_at"] ?></td>
 
                         <td class="align-middle text-center">
                           <!-- 刪除按鈕，觸發刪除確認視窗 -->
-                          <a class="btn btn-danger mx-1"  title="下架廠商資料" type="button" data-toggle="modal" data-target="#exampleModalLong"><i class="bi bi-ban"></i></a>
+                          <a class="btn btn-danger mx-1" title="下架廠商資料並解除認證" type="button" data-toggle="modal" data-target="#exampleModalLong"><i class="bi bi-ban"></i></a>
                         </td>
                       </tr>
                       <!-- 刪除彈出視窗 -->
@@ -365,20 +399,20 @@ $result = $conn->query($sql);
                         <div class="modal-dialog" role="document">
                           <div class="modal-content">
                             <div class="modal-header">
-                              <h5 class="modal-title" id="deletetable">下架廠商</h5>
+                              <h5 class="modal-title" id="deletetable">下架廠商(解除認證)</h5>
                               <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">×</span>
                               </button>
                             </div>
                             <div class="modal-body">
-                              確認要下架此廠商嗎?
+                              確認要下架廠商資料並解除認證此廠商嗎?
                             </div>
                             <div class="modal-footer">
                               <a class="btn btn-secondary" type="button" data-dismiss="modal">
                                 取消
                               </a>
                               <a class="btn btn-primary" href="doDeleteShop.php?shop_id=<?= $row["shop_id"] ?>">
-                                下架
+                                下架並解除
                               </a>
                             </div>
                           </div>

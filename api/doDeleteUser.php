@@ -1,5 +1,5 @@
 <?php
-require_once("./foodplatter_connect.php");
+require_once("../foodplatter_connect.php");
 
 if (!isset($_GET["user_id"])) {
     echo "請循正常管道進入此頁";
@@ -20,4 +20,4 @@ if ($conn->query($sql) === TRUE) {
 
 $conn->close();
 
-header("location:./userstables.php");
+header("location:../userstables.php");
