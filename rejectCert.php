@@ -2,19 +2,14 @@
 // 引入與資料庫連接的文件
 require_once("foodplatter_connect.php");
 
-// 全部店家
-$sqlAll = "SELECT * FROM shopinfo WHERE shop_valid=1 AND certified IN (0, 1)";
-$allTotal = $conn->query($sqlAll);
-$allshop = $allTotal->num_rows;
-echo $allshop;
 
-// 已認證店家
-$certAll = "SELECT * FROM shopinfo WHERE shop_valid=1 AND certified=1";
+// 已下架店家
+$certAll = "SELECT * FROM shopinfo WHERE shop_valid=0 AND certified=2";
 $certTotal = $conn->query($certAll);
 $certshop = $certTotal->num_rows;
 
-// 未認證店家
-$notCertTotal = "SELECT * FROM shopinfo WHERE shop_valid=1 AND certified=0";
+// 認證不通過店家
+$notCertTotal = "SELECT * FROM shopinfo WHERE shop_valid=1 AND certified=2";
 $resultTotal = $conn->query($notCertTotal);
 $totalshops = $resultTotal->num_rows;
 
@@ -30,7 +25,7 @@ if (isset($_GET["search"])) {
   $search = $_GET["search"];
 
   // 使用 "search" 參數來篩選查詢
-  $sql = "SELECT * FROM shopinfo WHERE shop_name LIKE '%$search%' AND shop_valid=1 AND certified=0";
+  $sql = "SELECT * FROM shopinfo WHERE shop_name LIKE '%$search%' AND shop_valid IN (0, 1) AND certified=2";
 }
 // 檢查是否有分頁參數
 elseif (isset($_GET["page"]) && isset($_GET["order"])) {
@@ -57,13 +52,13 @@ elseif (isset($_GET["page"]) && isset($_GET["order"])) {
   $startItem = ($page - 1) * $perPage;
 
   // 如果沒有 "search" 參數，使用基本的查詢
-  $sql = "SELECT * FROM shopinfo WHERE shop_valid = 1 AND certified=0 ORDER BY $orderSql LIMIT $startItem, $perPage";
+  $sql = "SELECT * FROM shopinfo WHERE shop_valid IN (0, 1) AND certified=2 ORDER BY $orderSql LIMIT $startItem, $perPage";
 }
 // 如果沒有搜尋參數也沒有分頁參數，顯示第一頁的結果
 else {
   $page = 1;
   $order = 1;
-  $sql = "SELECT * FROM shopinfo WHERE shop_valid = 1 AND certified=0 ORDER BY shop_id ASC LIMIT 0, $perPage";
+  $sql = "SELECT * FROM shopinfo WHERE shop_valid IN (0, 1) AND certified=2 ORDER BY shop_id ASC LIMIT 0, $perPage";
 }
 
 // 執行 SQL 查詢，並將結果存儲在 $result 變數中
@@ -251,68 +246,23 @@ $result = $conn->query($sql);
         <!-- Begin Page Content -->
         <div class="container-fluid">
           <div class="d-flex justify-content-between">
-            <h1 class="h3 mb-2 text-gray-800">認證管理</h1>
-            <!-- 按鈕組 -->
-            <?php if (!isset($_GET["search"])) : ?>
-              <div class="d-flex justify-content-end">
-                <div class="btn-group m-2">
-                  <a href="certificationtables.php?page=<?= $page ?>&order=1" class="btn btn-success text-white <?php if ($order == 1) echo "active" ?>">
-                    id
-                    <i class="bi bi-sort-down-alt"></i>
-                  </a>
-                  <a href="certificationtables.php?page=<?= $page ?>&order=2" class="btn btn-success text-white <?php if ($order == 2) echo "active" ?>">
-                    id
-                    <i class="bi bi-sort-up"></i>
-                  </a>
-                </div>
-                <div class="btn-group m-2">
-                  <a href="certificationtables.php?page=<?= $page ?>&order=3" class="btn btn-success text-white <?php if ($order == 3) echo "active" ?>">
-                    最後更新
-                    <i class="bi bi-sort-down-alt"></i>
-                  </a>
-                  <a href="certificationtables.php?page=<?= $page ?>&order=4" class="btn btn-success text-white <?php if ($order == 4) echo "active" ?>">
-                    最後更新
-                    <i class="bi bi-sort-up"></i>
-                  </a>
-                </div>
-              </div>
-            <?php endif; ?>
-            <!-- 按鈕組結束 -->
+            <h1 class="h3 mb-2 text-gray-800">下架管理</h1>
+
           </div>
           <!-- Page Heading -->
 
 
 
           <div class="row">
-            <!-- Earnings (Monthly) Card Example -->
-            <div class="col-xl-4 col-md-6 mb-4">
-              <div class="card border-left-primary shadow h-100 py-2">
-                <div class="card-body">
-                  <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                        所有店家
-                      </div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800">
-                        <?= $allshop ?>
-                      </div>
-                    </div>
-                    <div class="col-auto">
-                      <i class="bi bi-shop fa-2x text-gray-500"></i>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
 
             <!-- Earnings (Annual) Card Example -->
-            <div class="col-xl-4 col-md-6 mb-4">
+            <button class="col-xl-6 col-md-6 mb-4">
               <div class="card border-left-success shadow h-100 py-2">
                 <div class="card-body">
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                       <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                        已認證店家
+                        未通過認證店家
                       </div>
                       <div class="h5 mb-0 font-weight-bold text-gray-800">
                         <?= $certshop ?>
@@ -324,16 +274,16 @@ $result = $conn->query($sql);
                   </div>
                 </div>
               </div>
-            </div>
+            </button>
 
             <!-- Tasks Card Example -->
-            <div class="col-xl-4 col-md-6 mb-4">
+            <div class="col-xl-6 col-md-6 mb-4">
               <div class="card border-left-info shadow h-100 py-2">
                 <div class="card-body">
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                       <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-                        等待認證中店家
+                        已下架店家
                       </div>
                       <div class="row no-gutters align-items-center">
                         <div class="col-auto">
@@ -352,8 +302,6 @@ $result = $conn->query($sql);
             </div>
           </div>
 
-
-
           <div>
             <?php
             // $rows = $result->fetch_all(MYSQLI_BOTH);
@@ -367,6 +315,32 @@ $result = $conn->query($sql);
             <div class="card shadow mb-4">
               <div class="card-header d-flex align-items-center">
                 <h6 class="m-0 font-weight-bold text-primary">商家列表</h6>
+                <!-- 按鈕組 -->
+                <?php if (!isset($_GET["search"])) : ?>
+                  <div class="d-flex justify-content-end">
+                    <div class="btn-group m-2">
+                      <a href="certificationtables.php?page=<?= $page ?>&order=1" class="btn btn-success text-white <?php if ($order == 1) echo "active" ?>">
+                        id
+                        <i class="bi bi-sort-down-alt"></i>
+                      </a>
+                      <a href="certificationtables.php?page=<?= $page ?>&order=2" class="btn btn-success text-white <?php if ($order == 2) echo "active" ?>">
+                        id
+                        <i class="bi bi-sort-up"></i>
+                      </a>
+                    </div>
+                    <div class="btn-group m-2">
+                      <a href="certificationtables.php?page=<?= $page ?>&order=3" class="btn btn-success text-white <?php if ($order == 3) echo "active" ?>">
+                        最後更新
+                        <i class="bi bi-sort-down-alt"></i>
+                      </a>
+                      <a href="certificationtables.php?page=<?= $page ?>&order=4" class="btn btn-success text-white <?php if ($order == 4) echo "active" ?>">
+                        最後更新
+                        <i class="bi bi-sort-up"></i>
+                      </a>
+                    </div>
+                  </div>
+                <?php endif; ?>
+                <!-- 按鈕組結束 -->
               </div>
               <div class="overflow-auto">
                 <table class="table table-bordered text-nowrap table-striped">
@@ -499,8 +473,6 @@ $result = $conn->query($sql);
             目前無未認證商家
           <?php endif; ?>
         </div>
-
-        <!-- 01 -->
       </div>
       <!-- /.container-fluid -->
     </div>

@@ -127,19 +127,19 @@ $result = $conn->query($sql);
       <!--標題-->
       <div class="sidebar-heading">用戶管理</div>
 
-      <!--導航項目 -表格-->
+      <!--側邊攔項目-->
       <li class="nav-item">
         <a class="nav-link" href="shopstables.php">
           <i class="bi bi-shop"></i>
           <span>商家管理</span></a>
       </li>
-      <!--導航項目 -表格-->
+      <!--側邊攔項目-->
       <li class="nav-item">
         <a class="nav-link" href="certificationtables.php">
           <i class="bi bi-patch-exclamation"></i>
           <span>認證管理</span></a>
       </li>
-      <!--導航項目 -表格-->
+      <!--側邊攔項目-->
       <li class="nav-item">
         <a class="nav-link" href="userstables.php">
           <i class="bi bi-person-rolodex"></i>
@@ -152,7 +152,7 @@ $result = $conn->query($sql);
       <!--標題-->
       <div class="sidebar-heading">策略行銷</div>
 
-      <!--導航項目 -表格-->
+      <!--側邊攔項目-->
       <li class="nav-item">
         <a class="nav-link collapsed" data-toggle="collapse" data-target="#collapseCoupon" aria-expanded="true" aria-controls="collapseCoupon" href="coupons.php">
           <i class="bi bi-ticket-perforated"></i>
@@ -163,7 +163,7 @@ $result = $conn->query($sql);
             <h6 class="collapse-header">優惠卷管理</h6>
             <a class="collapse-item" href="coupons.php">優惠卷</a>
             <a class="collapse-item" href="coupons-add.php">優惠卷新增</a>
-            <a class="collapse-item" href="coupons-edit.php">優惠卷修改、刪除</a>
+            <a class="collapse-item" href="coupons.php">優惠卷修改、刪除</a>
           </div>
         </div>
       </li>
@@ -410,14 +410,13 @@ $result = $conn->query($sql);
                       <th class="align-middle text-center">名稱</th>
                       <th class="align-middle text-center">優惠卷介紹</th>
                       <th class="align-middle text-center">代碼</th>
-                      <th class="align-middle text-center">優惠種類</th>
-                      <th class="align-middle text-center">面額</th>
+                      <th class="align-middle text-center">低消金額</th>
+                      <th class="align-middle text-center">優惠金額</th>
                       <th class="align-middle text-center">開始日期</th>
                       <th class="align-middle text-center">到期日期</th>
-                      <th class="align-middle text-center">使用次數</th>
-                      <th class="align-middle text-center">低消金額</th>
-                      <th class="align-middle text-center">使用條件</th>
-                      <th class="align-middle text-center">狀態</th>
+                      <th class="align-middle text-center">總數量</th>
+                      <th class="align-middle text-center">用戶使用次數</th>
+                      <th class="align-middle text-center">創建時間</th>
                       <th class="align-middle text-center">最後更新</th>
                       <th></th>
                     </tr>
@@ -428,18 +427,20 @@ $result = $conn->query($sql);
                       <tr>
                         <td class="align-middle text-center"><?= $row["coupon_id"] ?></td>
                         <td class="align-middle text-center"><?= $row["coupon_name"] ?></td>
-                        <td class="align-middle text-wrap">
-                          <?= $row["coupon_introduce"] ?>
-                        </td>
+                        <td class="align-middle text-wrap"><?= $row["coupon_introduce"] ?></td>
                         <td class="align-middle text-wrap"><?= $row["coupon_code"] ?></td>
-                        <td class="align-middle text-center"><?= $row["coupon_type"] ?></td>
-                        <td class="align-middle text-center"><?= $row["coupon_discount"] ?></td>
+                        <td class="align-middle text-center">
+                          <?php
+                          $couponThreshold = $row["coupon_threshold"];
+                          echo ($couponThreshold == 0) ? '無' : number_format($couponThreshold);
+                          ?>
+                        </td>
+                        <td class="align-middle text-center"><?= number_format($row["coupon_discount"]) ?></td>
                         <td class="align-middle text-wrap"><?= $row["coupon_start"] ?></td>
                         <td class="align-middle text-wrap"><?= $row["coupon_exp"] ?></td>
                         <td class="align-middle text-center"><?= $row["coupon_max_count"] ?></td>
-                        <td class="align-middle text-center"><?= $row["modified_at"] ?></td>
-                        <td class="align-middle text-center"><?= $row["created_at"] ?></td>
-                        <td class="align-middle text-center"><?= $row["coupon_name"] ?></td>
+                        <td class="align-middle text-center"><?= $row["coupon_used_count"] ?></td>
+                        <td class="align-middle text-wrap"><?= $row["created_at"] ?></td>
                         <td class="align-middle text-wrap"><?= $row["modified_at"] ?></td>
                         <td class="align-middle text-center">
                           <a class="btn btn-outline-dark mx-1" href="coupons-edit.php?coupon_id=<?= $row["coupon_id"] ?>" title="修改優惠卷"><i class="bi bi-pencil-square"></i></a>

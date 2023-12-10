@@ -98,19 +98,19 @@ $couponCount = $result->num_rows;
       <!--標題-->
       <div class="sidebar-heading">用戶管理</div>
 
-      <!--導航項目 -表格-->
+      <!--側邊攔項目-->
       <li class="nav-item">
         <a class="nav-link" href="shopstables.php">
           <i class="bi bi-shop"></i>
           <span>商家管理</span></a>
       </li>
-      <!--導航項目 -表格-->
+      <!--側邊攔項目-->
       <li class="nav-item">
         <a class="nav-link" href="certificationtables.php">
           <i class="bi bi-patch-exclamation"></i>
           <span>認證管理</span></a>
       </li>
-      <!--導航項目 -表格-->
+      <!--側邊攔項目-->
       <li class="nav-item">
         <a class="nav-link" href="userstables.php">
           <i class="bi bi-person-rolodex"></i>
@@ -123,7 +123,7 @@ $couponCount = $result->num_rows;
       <!--標題-->
       <div class="sidebar-heading">策略行銷</div>
 
-      <!--導航項目 -表格-->
+      <!--側邊攔項目-->
       <li class="nav-item">
         <a class="nav-link collapsed" data-toggle="collapse" data-target="#collapseCoupon" aria-expanded="true" aria-controls="collapseCoupon" href="coupons.php">
           <i class="bi bi-ticket-perforated"></i>
@@ -134,7 +134,7 @@ $couponCount = $result->num_rows;
             <h6 class="collapse-header">優惠卷管理</h6>
             <a class="collapse-item" href="coupons.php">優惠卷</a>
             <a class="collapse-item" href="coupons-add.php">優惠卷新增</a>
-            <a class="collapse-item" href="coupons-edit.php">優惠卷修改、刪除</a>
+            <a class="collapse-item" href="coupons.php">優惠卷修改、刪除</a>
           </div>
         </div>
       </li>
@@ -228,15 +228,11 @@ $couponCount = $result->num_rows;
               <div class="mb-3">
                 <label for="sss" class="form-label">優惠卷代碼</label>
                 <input type="text" name="coupon_code" class="form-control" id="sss" placeholder="請輸入優惠卷代碼" value="<?= $row["coupon_code"] ?>" />
+                <a type="button" class="btn text-info" onclick="generateRandomCode()">產生隨機代碼</a>
               </div>
               <div class="mb-3">
-                <label for="sss" class="form-label">優惠卷種類</label>
-                <select name="coupon_type" class="form-select" aria-label="Default select example" value="<?= $row["coupon_type"] ?>">
-                  <option selected>選擇優惠卷種類</option>
-                  <option value="1">百分比</option>
-                  <option value="2">折扣金額</option>
-                  <option value="3">贈送小禮</option>
-                </select>
+                <label for="sss" class="form-label">優惠卷低消門檻(選填)</label>
+                <input type="text" name="coupon_threshold" class="form-control" id="" placeholder="請輸入優惠卷低消門檻(選填)" value="<?= $row["coupon_threshold"] ?>" />
               </div>
 
               <div class="mb-3">
@@ -275,18 +271,13 @@ $couponCount = $result->num_rows;
 
               <div class="mb-3">
                 <label for="tttt" class="form-label">使用數量</label>
-                <input type="text" name="coupon_used_count" class="form-control" id="tttt" placeholder="請輸入使用數量" value="<?= $row["coupon_used_count"] ?>" />
+                <input type="text" name="coupon_max_count" class="form-control" id="tttt" placeholder="請輸入使用數量" value="<?= $row["coupon_max_count"] ?>" />
+              </div>
+              <div class="mb-3">
+                <label for="1111" class="form-label">每一用戶使用次數</label>
+                <input type="text" name="coupon_used_count" class="form-control" id="1111" placeholder="請輸入使用數量" value="<?= $row["coupon_used_count"] ?>" />
               </div>
 
-              <div class="mb-3">
-                <label for="tddddttt" class="form-label">使用條件</label>
-                <select name="" class="form-select" aria-label="Default select example">
-                  <option selected>選擇使用條件</option>
-                  <option value="1">中式</option>
-                  <option value="2">西式</option>
-                  <option value="3">異國</option>
-                </select>
-              </div>
               <!-- 儲存和取消按鈕 -->
               <div class="py-2 d-flex justify-content-between">
                 <div>
@@ -374,6 +365,26 @@ $couponCount = $result->num_rows;
     </div>
   </div>
   <!-- 登出彈出視窗結束 -->
+
+  <script>
+    function generateRandomCode() {
+      // 生成隨機代碼的函數
+      var randomCode = generateRandomString(10); // 這裡的8表示生成10位的亂碼，你可以根據需要調整
+
+      // 將隨機代碼設置到input元素中
+      document.getElementById('sss').value = randomCode;
+    }
+
+    function generateRandomString(length) {
+      var result = '';
+      var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+      var charactersLength = characters.length;
+      for (var i = 0; i < length; i++) {
+        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+      }
+      return result;
+    }
+  </script>
 
   <!-- Bootstrap core JavaScript-->
   <script src="vendor/jquery/jquery.min.js"></script>

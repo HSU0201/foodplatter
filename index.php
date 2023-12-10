@@ -50,19 +50,19 @@
       <!--標題-->
       <div class="sidebar-heading">用戶管理</div>
 
-      <!--導航項目 -表格-->
+      <!--側邊攔項目-->
       <li class="nav-item">
         <a class="nav-link" href="shopstables.php">
           <i class="bi bi-shop"></i>
           <span>商家管理</span></a>
-        <!--導航項目 -表格-->
+        <!--側邊攔項目-->
       <li class="nav-item">
         <a class="nav-link" href="certificationtables.php">
           <i class="bi bi-patch-exclamation"></i>
           <span>認證管理</span></a>
       </li>
       </li>
-      <!--導航項目 -表格-->
+      <!--側邊攔項目-->
       <li class="nav-item">
         <a class="nav-link" href="userstables.php">
           <i class="bi bi-person-rolodex"></i>
@@ -75,7 +75,7 @@
       <!--標題-->
       <div class="sidebar-heading">策略行銷</div>
 
-      <!--導航項目 -表格-->
+      <!--側邊攔項目-->
       <li class="nav-item">
         <a class="nav-link collapsed" data-toggle="collapse" data-target="#collapseCoupon" aria-expanded="true" aria-controls="collapseCoupon" href="coupons.php">
           <i class="bi bi-ticket-perforated"></i>
@@ -86,7 +86,7 @@
             <h6 class="collapse-header">優惠卷管理</h6>
             <a class="collapse-item" href="coupons.php">優惠卷</a>
             <a class="collapse-item" href="coupons-add.php">優惠卷新增</a>
-            <a class="collapse-item" href="coupons-edit.php">優惠卷修改、刪除</a>
+            <a class="collapse-item" href="coupons.php">優惠卷修改、刪除</a>
           </div>
         </div>
       </li>
