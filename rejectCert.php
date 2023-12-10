@@ -17,6 +17,9 @@ $totalshops = $resultTotal->num_rows;
 $perPage = 10;
 // 進行無條件進位的相除操作，計算總頁數
 $pageCount = ceil($totalshops / $perPage);
+// ----------------------------------------------------------------------------------------
+
+
 
 // ----------------------------------------------------------------------------------------
 // 檢查是否有 GET 請求中的 "search" 參數
@@ -294,7 +297,7 @@ $result = $conn->query($sql);
                         被下架 店家
                       </div>
                       <div class="h3 mb-0 font-weight-bold text-gray-800">
-                        <?= $certshop ?> 家
+                        <?= $totalshops ?> 家
                       </div>
                     </div>
                     <div class="col-auto">
@@ -314,38 +317,39 @@ $result = $conn->query($sql);
             ?>
           </div>
 
-          <?php if ($shopCount > 0) : ?>
-            <!-- DataTales Example -->
-            <div class="card shadow mb-4">
-              <div class="card-header d-flex align-items-center">
-                <h6 class="m-0 font-weight-bold text-primary">商家列表</h6>
-                <!-- 按鈕組 -->
-                <?php if (!isset($_GET["search"])) : ?>
-                  <div class="d-flex justify-content-end">
-                    <div class="btn-group m-2">
-                      <a href="rejectCert.php?page=<?= $page ?>&order=1" class="btn btn-success text-white <?php if ($order == 1) echo "active" ?>">
-                        id
-                        <i class="bi bi-sort-down-alt"></i>
-                      </a>
-                      <a href="rejectCert.php?page=<?= $page ?>&order=2" class="btn btn-success text-white <?php if ($order == 2) echo "active" ?>">
-                        id
-                        <i class="bi bi-sort-up"></i>
-                      </a>
-                    </div>
-                    <div class="btn-group m-2">
-                      <a href="rejectCert.php?page=<?= $page ?>&order=3" class="btn btn-success text-white <?php if ($order == 3) echo "active" ?>">
-                        最後更新
-                        <i class="bi bi-sort-down-alt"></i>
-                      </a>
-                      <a href="rejectCert.php?page=<?= $page ?>&order=4" class="btn btn-success text-white <?php if ($order == 4) echo "active" ?>">
-                        最後更新
-                        <i class="bi bi-sort-up"></i>
-                      </a>
-                    </div>
+
+          <!-- DataTales Example -->
+          <div class="card shadow mb-4">
+            <div class="card-header d-flex align-items-center">
+              <h6 class="m-0 font-weight-bold text-primary">商家列表</h6>
+              <!-- 按鈕組 -->
+              <?php if (!isset($_GET["search"])) : ?>
+                <div class="d-flex justify-content-end">
+                  <div class="btn-group m-2">
+                    <a href="rejectCert.php?page=<?= $page ?>&order=1" class="btn btn-success text-white <?php if ($order == 1) echo "active" ?>">
+                      id
+                      <i class="bi bi-sort-down-alt"></i>
+                    </a>
+                    <a href="rejectCert.php?page=<?= $page ?>&order=2" class="btn btn-success text-white <?php if ($order == 2) echo "active" ?>">
+                      id
+                      <i class="bi bi-sort-up"></i>
+                    </a>
                   </div>
-                <?php endif; ?>
-                <!-- 按鈕組結束 -->
-              </div>
+                  <div class="btn-group m-2">
+                    <a href="rejectCert.php?page=<?= $page ?>&order=3" class="btn btn-success text-white <?php if ($order == 3) echo "active" ?>">
+                      最後更新
+                      <i class="bi bi-sort-down-alt"></i>
+                    </a>
+                    <a href="rejectCert.php?page=<?= $page ?>&order=4" class="btn btn-success text-white <?php if ($order == 4) echo "active" ?>">
+                      最後更新
+                      <i class="bi bi-sort-up"></i>
+                    </a>
+                  </div>
+                </div>
+              <?php endif; ?>
+              <!-- 按鈕組結束 -->
+            </div>
+            <?php if ($shopCount > 0) : ?>
               <div class="overflow-auto">
                 <table class="table table-bordered text-nowrap table-striped">
                   <thead>
@@ -471,11 +475,12 @@ $result = $conn->query($sql);
 
               </div>
               <!-- 商家列表結束 -->
-            </div>
-          <?php else : ?>
-            <!-- 若無商家資料則顯示訊息 -->
-            目前無未認證商家
-          <?php endif; ?>
+
+            <?php else : ?>
+              <!-- 若無商家資料則顯示訊息 -->
+              <h1 class="text-center">尚無 未認證/下架店家</h1>
+            <?php endif; ?>
+          </div>
         </div>
       </div>
       <!-- /.container-fluid -->
@@ -504,6 +509,8 @@ $result = $conn->query($sql);
   <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
   <!-- Page level custom scripts -->
   <script src="js/demo/datatables-demo.js"></script>
+
+
 </body>
 
 </html>
