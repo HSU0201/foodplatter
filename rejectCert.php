@@ -104,7 +104,7 @@ $result = $conn->query($sql);
       <hr class="sidebar-divider my-0" />
 
       <!--導航項目 -首頁-->
-      <li class="nav-item active">
+      <li class="nav-item">
         <a class="nav-link" href="index.php">
           <i class="fas fa-fw fa-tachometer-alt"></i>
           <span>首頁</span>
@@ -129,6 +129,14 @@ $result = $conn->query($sql);
           <i class="bi bi-patch-exclamation"></i>
           <span>認證管理</span></a>
       </li>
+
+      <!--側邊攔項目-->
+      <li class="nav-item  active">
+        <a class="nav-link" href="rejectCert.php">
+          <i class="bi bi-arrow-repeat"></i>
+          <span>複審核管理</span></a>
+      </li>
+
       <!--側邊攔項目-->
       <li class="nav-item">
         <a class="nav-link" href="userstables.php">
@@ -246,7 +254,7 @@ $result = $conn->query($sql);
         <!-- Begin Page Content -->
         <div class="container-fluid">
           <div class="d-flex justify-content-between">
-            <h1 class="h3 mb-2 text-gray-800">下架管理</h1>
+            <h1 class="h3 mb-2 text-gray-800">複審核管理</h1>
 
           </div>
           <!-- Page Heading -->
@@ -256,50 +264,46 @@ $result = $conn->query($sql);
           <div class="row">
 
             <!-- Earnings (Annual) Card Example -->
-            <button class="col-xl-6 col-md-6 mb-4">
-              <div class="card border-left-success shadow h-100 py-2">
+            <button class="col-xl-6 col-md-6 mb-4 btn">
+              <div class="card border-left-warning shadow h-100 py-2">
                 <div class="card-body">
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                        未通過認證店家
+                      <div class="text-lg font-weight-bold text-warning text-uppercase mb-1">
+                        認證未通過 店家
                       </div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800">
-                        <?= $certshop ?>
+                      <div class="h3 mb-0 font-weight-bold text-gray-800">
+                        <?= $certshop ?> 家
                       </div>
                     </div>
                     <div class="col-auto">
-                      <i class="bi bi-patch-check-fill fa-2x text-green-800"></i>
+                      <i class="bi bi-dash-circle fa-2x text-warning"></i>
                     </div>
                   </div>
                 </div>
               </div>
             </button>
 
-            <!-- Tasks Card Example -->
-            <div class="col-xl-6 col-md-6 mb-4">
-              <div class="card border-left-info shadow h-100 py-2">
+            <!-- Earnings (Annual) Card Example -->
+            <button class="col-xl-6 col-md-6 mb-4 btn">
+              <div class="card border-left-danger shadow h-100 py-2">
                 <div class="card-body">
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-                        已下架店家
+                      <div class="text-lg font-weight-bold text-danger text-uppercase mb-1">
+                        被下架 店家
                       </div>
-                      <div class="row no-gutters align-items-center">
-                        <div class="col-auto">
-                          <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">
-                            <?= $totalshops ?>
-                          </div>
-                        </div>
+                      <div class="h3 mb-0 font-weight-bold text-gray-800">
+                        <?= $certshop ?> 家
                       </div>
                     </div>
                     <div class="col-auto">
-                      <i class="bi bi-patch-exclamation-fill fa-2x text-red-800"></i>
+                      <i class="bi bi-exclamation-circle fa-2x text-danger"></i>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
+            </button>
           </div>
 
           <div>
@@ -319,21 +323,21 @@ $result = $conn->query($sql);
                 <?php if (!isset($_GET["search"])) : ?>
                   <div class="d-flex justify-content-end">
                     <div class="btn-group m-2">
-                      <a href="certificationtables.php?page=<?= $page ?>&order=1" class="btn btn-success text-white <?php if ($order == 1) echo "active" ?>">
+                      <a href="rejectCert.php?page=<?= $page ?>&order=1" class="btn btn-success text-white <?php if ($order == 1) echo "active" ?>">
                         id
                         <i class="bi bi-sort-down-alt"></i>
                       </a>
-                      <a href="certificationtables.php?page=<?= $page ?>&order=2" class="btn btn-success text-white <?php if ($order == 2) echo "active" ?>">
+                      <a href="rejectCert.php?page=<?= $page ?>&order=2" class="btn btn-success text-white <?php if ($order == 2) echo "active" ?>">
                         id
                         <i class="bi bi-sort-up"></i>
                       </a>
                     </div>
                     <div class="btn-group m-2">
-                      <a href="certificationtables.php?page=<?= $page ?>&order=3" class="btn btn-success text-white <?php if ($order == 3) echo "active" ?>">
+                      <a href="rejectCert.php?page=<?= $page ?>&order=3" class="btn btn-success text-white <?php if ($order == 3) echo "active" ?>">
                         最後更新
                         <i class="bi bi-sort-down-alt"></i>
                       </a>
-                      <a href="certificationtables.php?page=<?= $page ?>&order=4" class="btn btn-success text-white <?php if ($order == 4) echo "active" ?>">
+                      <a href="rejectCert.php?page=<?= $page ?>&order=4" class="btn btn-success text-white <?php if ($order == 4) echo "active" ?>">
                         最後更新
                         <i class="bi bi-sort-up"></i>
                       </a>
@@ -488,25 +492,18 @@ $result = $conn->query($sql);
     <i class="fas fa-angle-up"></i>
   </a>
 
-
-
   <!-- Bootstrap core JavaScript-->
   <script src="vendor/jquery/jquery.min.js"></script>
   <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
   <!-- Core plugin JavaScript-->
   <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-
   <!-- Custom scripts for all pages-->
   <script src="js/sb-admin-2.min.js"></script>
-
   <!-- Page level plugins -->
   <script src="vendor/datatables/jquery.dataTables.min.js"></script>
   <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
-
   <!-- Page level custom scripts -->
   <script src="js/demo/datatables-demo.js"></script>
-
 </body>
 
 </html>

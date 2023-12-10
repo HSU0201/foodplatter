@@ -114,7 +114,7 @@ $result = $conn->query($sql);
       <hr class="sidebar-divider my-0" />
 
       <!--導航項目 -首頁-->
-      <li class="nav-item active">
+      <li class="nav-item">
         <a class="nav-link" href="index.php">
           <i class="fas fa-fw fa-tachometer-alt"></i>
           <span>首頁</span>
@@ -133,11 +133,18 @@ $result = $conn->query($sql);
           <i class="bi bi-shop"></i>
           <span>商家管理</span></a>
       </li>
-      <!--側邊攔項目-->
+            <!--側邊攔項目-->
       <li class="nav-item">
         <a class="nav-link" href="certificationtables.php">
           <i class="bi bi-patch-exclamation"></i>
           <span>認證管理</span></a>
+      </li>
+
+      <!--側邊攔項目-->
+      <li class="nav-item">
+        <a class="nav-link" href="rejectCert.php">
+          <i class="bi bi-arrow-repeat"></i>
+          <span>複審核管理</span></a>
       </li>
       <!--側邊攔項目-->
       <li class="nav-item">
@@ -153,7 +160,7 @@ $result = $conn->query($sql);
       <div class="sidebar-heading">策略行銷</div>
 
       <!--側邊攔項目-->
-      <li class="nav-item">
+      <li class="nav-item active">
         <a class="nav-link collapsed" data-toggle="collapse" data-target="#collapseCoupon" aria-expanded="true" aria-controls="collapseCoupon" href="coupons.php">
           <i class="bi bi-ticket-perforated"></i>
           <span>優惠卷管理</span>

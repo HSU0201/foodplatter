@@ -55,11 +55,18 @@
         <a class="nav-link" href="shopstables.php">
           <i class="bi bi-shop"></i>
           <span>商家管理</span></a>
-        <!--側邊攔項目-->
+              <!--側邊攔項目-->
       <li class="nav-item">
         <a class="nav-link" href="certificationtables.php">
           <i class="bi bi-patch-exclamation"></i>
           <span>認證管理</span></a>
+      </li>
+
+      <!--側邊攔項目-->
+      <li class="nav-item">
+        <a class="nav-link" href="rejectCert.php">
+          <i class="bi bi-arrow-repeat"></i>
+          <span>複審核管理</span></a>
       </li>
       </li>
       <!--側邊攔項目-->
