@@ -12,6 +12,8 @@ $perPage = 10;
 // 進行無條件進位的相除操作，計算總頁數
 $pageCount = ceil($totalusers / $perPage);
 
+
+
 // ----------------------------------------------------------------------------------------
 // 檢查是否有 GET 請求中的 "search" 參數
 if (isset($_GET["search"])) {
@@ -61,6 +63,8 @@ else {
 
 // 執行 SQL 查詢，並將結果存儲在 $result 變數中
 $result = $conn->query($sql);
+
+$rows = $result->fetch_all(MYSQLI_ASSOC);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -257,7 +261,6 @@ $result = $conn->query($sql);
           <p class="mb-4">
             對平台或組織的會員進行有效監控、維護和操作的一系列功能，包括註冊、資料更新、權限管理和互動追蹤等。
           </p>
-
           <!-- 按鈕組 -->
           <div class="d-flex justify-content-end">
             <div class="btn-group m-2">
@@ -286,7 +289,7 @@ $result = $conn->query($sql);
           <div>
             <?php
             // $rows = $result->fetch_all(MYSQLI_BOTH);
-            $rows = $result->fetch_all(MYSQLI_ASSOC);
+           
             // var_dump($rows);
             ?>
           </div>
@@ -325,7 +328,7 @@ $result = $conn->query($sql);
                         </td>
                         <td class="align-middle text-center"><?= $row["user_birth"] ?></td>
                         <td class="align-middle text-center"><?= $row["user_email"] ?></td>
-                        <td class="align-middle text-center">0<?= $row["user_phone"] ?></td>
+                        <td class="align-middle text-center"><?= $row["user_phone"] ?></td>
                         <td class="align-middle text-wrap">
                           <?= $row["user_address"] ?>
                         </td>
@@ -338,6 +341,7 @@ $result = $conn->query($sql);
                           <a class="btn btn-outline-dark mx-1" href="usersindex.php?user_id=<?= $row["user_id"] ?>" title="會員詳細資料"><i class="bi bi-info-circle"></i></a>
                           <!-- 刪除按鈕，觸發刪除確認視窗 -->
                           <a class="btn btn-outline-danger mx-1" title="刪除會員資料" type="button" data-toggle="modal" data-target="#exampleModalLong"><i class="bi bi-trash"></i></a>
+                          <?= $row["user_id"] ?>
                         </td> 
                         <!-- 刪除彈出視窗 -->
                         <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="deletetable" aria-hidden="true">
@@ -365,7 +369,6 @@ $result = $conn->query($sql);
                         </div>
                         <!-- 刪除彈出視窗結束 -->
                       </tr>
-
                     <?php endforeach; ?>
                   </tbody>
                 </table>
