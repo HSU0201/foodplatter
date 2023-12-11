@@ -10,12 +10,28 @@ if (!isset($_GET["shop_id"])) {
 
 // 從 POST 參數中獲取需要更新的優惠卷資料
 $id = $_GET["shop_id"];
+$var = $_GET["var"];
+$del = $_GET["del"];
 
 // 構建 SQL 更新語句
-$sql = "UPDATE shopinfo 
+// $sql = "UPDATE shopinfo 
+//         SET shop_valid='0',
+//         certified='0'
+//         WHERE shop_id=$id";
+
+if ($del == 1) :
+    // 構建 SQL 更新語句
+    $sql = "UPDATE shopinfo 
         SET shop_valid='0',
-        certified='3'
+        certified='2'
         WHERE shop_id=$id";
+else :
+    // 構建 SQL 更新語句
+    $sql = "UPDATE shopinfo 
+        SET shop_valid='0',
+        certified='0'
+        WHERE shop_id=$id";
+endif;
 
 // 印出 SQL 語句，用於測試
 // echo $sql;
@@ -30,5 +46,9 @@ if ($conn->query($sql) === TRUE) {
 // 關閉資料庫連接
 $conn->close();
 
-// 重新導向到認證列表頁面
-header("location:certificationtables.php");
+if ($var == 3) :
+    // 重新導向到認證列表頁面
+    header("location:rejectCert.php?var=3");
+else :
+    header("location:rejectCert.php?var=2");
+endif;

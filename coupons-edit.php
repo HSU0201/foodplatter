@@ -104,16 +104,17 @@ $couponCount = $result->num_rows;
           <i class="bi bi-shop"></i>
           <span>商家管理</span></a>
       </li>
-            <!--側邊攔項目-->
+      <!--側邊攔項目-->
       <li class="nav-item">
         <a class="nav-link" href="certificationtables.php">
           <i class="bi bi-patch-exclamation"></i>
           <span>認證管理</span></a>
       </li>
 
+
       <!--側邊攔項目-->
       <li class="nav-item">
-        <a class="nav-link" href="rejectCert.php">
+        <a class="nav-link" href="rejectCert.php?var=3">
           <i class="bi bi-arrow-repeat"></i>
           <span>複審核管理</span></a>
       </li>
@@ -293,7 +294,33 @@ $couponCount = $result->num_rows;
                 </div>
                 <div>
                   <!-- 刪除按鈕，觸發刪除確認視窗 -->
-                  <button type="button" data-bs-toggle="modal" data-bs-target="#alertModal" class="btn btn-danger">刪除</button>
+                  <a class="btn btn-danger mx-1" title="刪除優惠卷" type="button" data-toggle="modal" data-target="#exampleModalLong">刪除</a>
+
+                  <!-- 刪除彈出視窗 -->
+                  <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="deletetable" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="deletetable">刪除優惠卷</h5>
+                          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                          </button>
+                        </div>
+                        <div class="modal-body">
+                          確認要刪除此優惠卷嗎?
+                        </div>
+                        <div class="modal-footer">
+                          <a class="btn btn-secondary" type="button" data-dismiss="modal">
+                            取消
+                          </a>
+                          <a class="btn btn-primary" href="doDeleteCoupon.php?coupon_id=<?= $row["coupon_id"] ?>">
+                            刪除
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- 刪除彈出視窗結束 -->
                 </div>
               </div>
             </form>

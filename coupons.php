@@ -141,8 +141,9 @@ $result = $conn->query($sql);
       </li>
 
       <!--側邊攔項目-->
+      <!--側邊攔項目-->
       <li class="nav-item">
-        <a class="nav-link" href="rejectCert.php">
+        <a class="nav-link" href="rejectCert.php?var=3">
           <i class="bi bi-arrow-repeat"></i>
           <span>複審核管理</span></a>
       </li>
@@ -451,9 +452,35 @@ $result = $conn->query($sql);
                         <td class="align-middle text-wrap"><?= $row["modified_at"] ?></td>
                         <td class="align-middle text-center">
                           <a class="btn btn-outline-dark mx-1" href="coupons-edit.php?coupon_id=<?= $row["coupon_id"] ?>" title="修改優惠卷"><i class="bi bi-pencil-square"></i></a>
-                          <a class="btn btn-outline-danger mx-1" href="doDeleteCoupon.php?coupon_id=<?= $row["coupon_id"] ?>" title="刪除優惠卷"><i class="bi bi-trash"></i></a>
+                          <!-- 刪除按鈕，觸發刪除確認視窗 -->
+                          <a class="btn btn-danger mx-1" title="刪除優惠卷" type="button" data-toggle="modal" data-target="#exampleModalLong"><i class="bi bi-ban"></i></a>
                         </td>
                       </tr>
+                      <!-- 刪除彈出視窗 -->
+                      <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="deletetable" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="deletetable">刪除優惠卷</h5>
+                              <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                              </button>
+                            </div>
+                            <div class="modal-body">
+                              確認要刪除此優惠卷嗎?
+                            </div>
+                            <div class="modal-footer">
+                              <a class="btn btn-secondary" type="button" data-dismiss="modal">
+                                取消
+                              </a>
+                              <a class="btn btn-primary" href="doDeleteCoupon.php?coupon_id=<?= $row["coupon_id"] ?>">
+                              刪除
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- 刪除彈出視窗結束 -->
                     <?php endforeach; ?>
                   </tbody>
                 </table>

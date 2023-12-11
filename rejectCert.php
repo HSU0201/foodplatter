@@ -1,34 +1,53 @@
+<!-- 0未審核 1已審核2以下架3審核未通過 -->
 <?php
 // 引入與資料庫連接的文件
 require_once("foodplatter_connect.php");
 
-
-// 已下架店家
-$certAll = "SELECT * FROM shopinfo WHERE shop_valid=0 AND certified=2";
+// 認證不通過店家
+$certAll = "SELECT * FROM shopinfo WHERE shop_valid=0 AND certified=3";
 $certTotal = $conn->query($certAll);
 $certshop = $certTotal->num_rows;
 
+// 已下架店家
+$notCertTotal = "SELECT * FROM shopinfo WHERE shop_valid=0 AND certified=2";
+$resultNotTotal = $conn->query($notCertTotal);
+$notshops = $resultNotTotal->num_rows;
+
+
+// ----------------------------------------------------------------------------------------
+$var = $_GET["var"];
+switch ($var) {
+  case 0:
+    $varSql = 0;
+    break;
+  case 1:
+    $varSql = 1;
+  case 2:
+    $varSql = 2;
+    break;
+  case 3:
+    $varSql = 3;
+    break;
+  default:
+    $varSql = 0;
+}
+// ----------------------------------------------------------------------------------------
 // 認證不通過店家
-$notCertTotal = "SELECT * FROM shopinfo WHERE shop_valid=1 AND certified=2";
-$resultTotal = $conn->query($notCertTotal);
+$allTotal = "SELECT * FROM shopinfo WHERE shop_valid=0 AND certified=$varSql";
+$resultTotal = $conn->query($allTotal);
 $totalshops = $resultTotal->num_rows;
 
 // 每頁顯示的商家數
 $perPage = 10;
 // 進行無條件進位的相除操作，計算總頁數
 $pageCount = ceil($totalshops / $perPage);
-// ----------------------------------------------------------------------------------------
-
-
-
-// ----------------------------------------------------------------------------------------
 // 檢查是否有 GET 請求中的 "search" 參數
 if (isset($_GET["search"])) {
   // 如果有，取得 "search" 參數的值
   $search = $_GET["search"];
 
   // 使用 "search" 參數來篩選查詢
-  $sql = "SELECT * FROM shopinfo WHERE shop_name LIKE '%$search%' AND shop_valid IN (0, 1) AND certified=2";
+  $sql = "SELECT * FROM shopinfo WHERE shop_name LIKE '%$search%' AND shop_valid=0 AND certified=$varSql";
 }
 // 檢查是否有分頁參數
 elseif (isset($_GET["page"]) && isset($_GET["order"])) {
@@ -55,13 +74,13 @@ elseif (isset($_GET["page"]) && isset($_GET["order"])) {
   $startItem = ($page - 1) * $perPage;
 
   // 如果沒有 "search" 參數，使用基本的查詢
-  $sql = "SELECT * FROM shopinfo WHERE shop_valid IN (0, 1) AND certified=2 ORDER BY $orderSql LIMIT $startItem, $perPage";
+  $sql = "SELECT * FROM shopinfo WHERE shop_valid=0 AND certified=$varSql ORDER BY $orderSql LIMIT $startItem, $perPage";
 }
 // 如果沒有搜尋參數也沒有分頁參數，顯示第一頁的結果
 else {
   $page = 1;
   $order = 1;
-  $sql = "SELECT * FROM shopinfo WHERE shop_valid IN (0, 1) AND certified=2 ORDER BY shop_id ASC LIMIT 0, $perPage";
+  $sql = "SELECT * FROM shopinfo WHERE shop_valid=0 AND certified=$varSql ORDER BY shop_id ASC LIMIT 0, $perPage";
 }
 
 // 執行 SQL 查詢，並將結果存儲在 $result 變數中
@@ -134,8 +153,8 @@ $result = $conn->query($sql);
       </li>
 
       <!--側邊攔項目-->
-      <li class="nav-item  active">
-        <a class="nav-link" href="rejectCert.php">
+      <li class="nav-item active">
+        <a class="nav-link" href="rejectCert.php?var=3">
           <i class="bi bi-arrow-repeat"></i>
           <span>複審核管理</span></a>
       </li>
@@ -267,12 +286,12 @@ $result = $conn->query($sql);
           <div class="row">
 
             <!-- Earnings (Annual) Card Example -->
-            <button class="col-xl-6 col-md-6 mb-4 btn">
-              <div class="card border-left-warning shadow h-100 py-2">
+            <a class="col-xl-6 col-md-6 mb-4 btn " href="rejectCert.php?var=3">
+              <div class="card border-left-warning shadow h-100 py-2 <?php if ($var == 3) echo "border-warning" ?>">
                 <div class="card-body">
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                      <div class="text-lg font-weight-bold text-warning text-uppercase mb-1">
+                      <div class="text-lg font-weight-bold text-warning text-uppercase mb-1 ">
                         認證未通過 店家
                       </div>
                       <div class="h3 mb-0 font-weight-bold text-gray-800">
@@ -285,11 +304,11 @@ $result = $conn->query($sql);
                   </div>
                 </div>
               </div>
-            </button>
+            </a>
 
             <!-- Earnings (Annual) Card Example -->
-            <button class="col-xl-6 col-md-6 mb-4 btn">
-              <div class="card border-left-danger shadow h-100 py-2">
+            <a class="col-xl-6 col-md-6 mb-4 btn" href="rejectCert.php?var=2">
+              <div class="card border-left-danger shadow h-100 py-2 <?php if ($var == 2) echo "border-danger" ?>">
                 <div class="card-body">
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
@@ -297,7 +316,7 @@ $result = $conn->query($sql);
                         被下架 店家
                       </div>
                       <div class="h3 mb-0 font-weight-bold text-gray-800">
-                        <?= $totalshops ?> 家
+                        <?= $notshops ?> 家
                       </div>
                     </div>
                     <div class="col-auto">
@@ -306,7 +325,7 @@ $result = $conn->query($sql);
                   </div>
                 </div>
               </div>
-            </button>
+            </a>
           </div>
 
           <div>
@@ -326,21 +345,21 @@ $result = $conn->query($sql);
               <?php if (!isset($_GET["search"])) : ?>
                 <div class="d-flex justify-content-end">
                   <div class="btn-group m-2">
-                    <a href="rejectCert.php?page=<?= $page ?>&order=1" class="btn btn-success text-white <?php if ($order == 1) echo "active" ?>">
+                    <a href="rejectCert.php?var=<?= $var ?>&page=<?= $page ?>&order=1" class="btn btn-success text-white <?php if ($order == 1) echo "active" ?>">
                       id
                       <i class="bi bi-sort-down-alt"></i>
                     </a>
-                    <a href="rejectCert.php?page=<?= $page ?>&order=2" class="btn btn-success text-white <?php if ($order == 2) echo "active" ?>">
+                    <a href="rejectCert.php?var=<?= $var ?>&page=<?= $page ?>&order=2" class="btn btn-success text-white <?php if ($order == 2) echo "active" ?>">
                       id
                       <i class="bi bi-sort-up"></i>
                     </a>
                   </div>
                   <div class="btn-group m-2">
-                    <a href="rejectCert.php?page=<?= $page ?>&order=3" class="btn btn-success text-white <?php if ($order == 3) echo "active" ?>">
+                    <a href="rejectCert.php?var=<?= $var ?>&page=<?= $page ?>&order=3" class="btn btn-success text-white <?php if ($order == 3) echo "active" ?>">
                       最後更新
                       <i class="bi bi-sort-down-alt"></i>
                     </a>
-                    <a href="rejectCert.php?page=<?= $page ?>&order=4" class="btn btn-success text-white <?php if ($order == 4) echo "active" ?>">
+                    <a href="rejectCert.php?var=<?= $var ?>&page=<?= $page ?>&order=4" class="btn btn-success text-white <?php if ($order == 4) echo "active" ?>">
                       最後更新
                       <i class="bi bi-sort-up"></i>
                     </a>
@@ -420,30 +439,34 @@ $result = $conn->query($sql);
                         <td class="align-middle text-center"><?= $row["modified_at"] ?></td>
 
                         <td class="align-middle text-center">
-                          <a class="btn btn-success mx-1" href="doUpdateCert.php?shop_id=<?= $row["shop_id"] ?>" title="通過認證"><i class="bi bi-check-lg"></i></a>
-                          <!-- 刪除按鈕，觸發刪除確認視窗 -->
-                          <a class="btn btn-danger mx-1" title="不通過認證" type="button" data-toggle="modal" data-target="#exampleModalLong"><i class="bi bi-ban"></i></a>
+                          <?php if ($var == 3) : ?>
+                            <a class="btn btn-success mx-1" href="doResetCert.php?var=3&shop_id=<?= $row["shop_id"] ?>" title="還原狀態"><i class="bi bi-arrow-clockwise"></i></a>
+                            <!-- 刪除按鈕，觸發刪除確認視窗 -->
+                            <a class="btn btn-danger mx-1" title="複審核不通過" type="button" data-toggle="modal" data-target="#exampleModalLong1"><i class="bi bi-ban"></i></a>
+                          <?php else : ?>
+                            <a class="btn btn-success mx-1" href="doResetCert.php?var=2&shop_id=<?= $row["shop_id"] ?>" title="還原狀態"><i class="bi bi-arrow-clockwise"></i></a>
+                          <?php endif; ?>
                         </td>
                       </tr>
                       <!-- 刪除彈出視窗 -->
-                      <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="deletetable" aria-hidden="true">
+                      <div class="modal fade" id="exampleModalLong1" tabindex="-1" role="dialog" aria-labelledby="deletetable" aria-hidden="true">
                         <div class="modal-dialog" role="document">
                           <div class="modal-content">
                             <div class="modal-header">
-                              <h5 class="modal-title" id="deletetable">不通過認證</h5>
+                              <h5 class="modal-title" id="deletetable">複審核不通過</h5>
                               <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">×</span>
                               </button>
                             </div>
                             <div class="modal-body">
-                              確認此廠商要不通過認證嗎?
+                              確認此廠商複審核不通過將其下架嗎?
                             </div>
                             <div class="modal-footer">
                               <a class="btn btn-secondary" type="button" data-dismiss="modal">
                                 取消
                               </a>
-                              <a class="btn btn-primary" href="doUpdateNotCert.php?shop_id=<?= $row["shop_id"] ?>">
-                                確定不通過
+                              <a class="btn btn-primary" href="doResetCert.php?var=3&shop_id=<?= $row["shop_id"] ?>&del=1">
+                                確定下架
                               </a>
                             </div>
                           </div>
@@ -477,8 +500,13 @@ $result = $conn->query($sql);
               <!-- 商家列表結束 -->
 
             <?php else : ?>
-              <!-- 若無商家資料則顯示訊息 -->
-              <h1 class="text-center">尚無 未認證/下架店家</h1>
+              <?php if ($var == 3) : ?>
+                <!-- 若無商家資料則顯示訊息 -->
+                <h1 class="text-center">尚無<span class="text-warning">未認證</span>店家</h1>
+              <?php else : ?>
+                <!-- 若無商家資料則顯示訊息 -->
+                <h1 class="text-center">尚無<span class="text-danger">下架</span>店家</h1>
+              <?php endif; ?>
             <?php endif; ?>
           </div>
         </div>
@@ -496,6 +524,29 @@ $result = $conn->query($sql);
   <a class="scroll-to-top rounded" href="#page-top">
     <i class="fas fa-angle-up"></i>
   </a>
+  <!-- 登出彈出視窗 -->
+  <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">確定要離開嗎?</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          如果您準備結束目前會話，請選擇下面的「登出」。
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" data-dismiss="modal">
+            取消
+          </button>
+          <a class="btn btn-primary" href="login.php">登出</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- 登出彈出視窗結束 -->
 
   <!-- Bootstrap core JavaScript-->
   <script src="vendor/jquery/jquery.min.js"></script>

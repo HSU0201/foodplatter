@@ -154,12 +154,14 @@ $result = $conn->query($sql);
           <span>認證管理</span></a>
       </li>
 
+
       <!--側邊攔項目-->
       <li class="nav-item">
-        <a class="nav-link" href="rejectCert.php">
+        <a class="nav-link" href="rejectCert.php?var=3">
           <i class="bi bi-arrow-repeat"></i>
           <span>複審核管理</span></a>
       </li>
+
       <!--側邊攔項目-->
       <li class="nav-item">
         <a class="nav-link" href="userstables.php">

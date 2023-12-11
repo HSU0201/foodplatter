@@ -1,22 +1,21 @@
 <?php
 // 引入與資料庫連接的文件
 require_once("foodplatter_connect.php");
-
-// 全部店家
-$sqlAll = "SELECT * FROM shopinfo WHERE shop_valid=1 AND certified IN (0, 1)";
-$allTotal = $conn->query($sqlAll);
-$allshop = $allTotal->num_rows;
-echo $allshop;
-
 // 已認證店家
 $certAll = "SELECT * FROM shopinfo WHERE shop_valid=1 AND certified=1";
 $certTotal = $conn->query($certAll);
 $certshop = $certTotal->num_rows;
 
 // 未認證店家
-$notCertTotal = "SELECT * FROM shopinfo WHERE shop_valid=1 AND certified=0";
+$notCertTotal = "SELECT * FROM shopinfo WHERE shop_valid=0 AND certified=0";
 $resultTotal = $conn->query($notCertTotal);
 $totalshops = $resultTotal->num_rows;
+
+// 全部店家
+// $sqlAll ="$certAll UNION $notCertTotal";
+$sqlAll = $totalshops + $certshop;
+// $allTotal = $conn->query($sqlAll);
+// $allshop = $allTotal->num_rows;
 
 // 每頁顯示的商家數
 $perPage = 10;
@@ -57,13 +56,13 @@ elseif (isset($_GET["page"]) && isset($_GET["order"])) {
   $startItem = ($page - 1) * $perPage;
 
   // 如果沒有 "search" 參數，使用基本的查詢
-  $sql = "SELECT * FROM shopinfo WHERE shop_valid = 1 AND certified=0 ORDER BY $orderSql LIMIT $startItem, $perPage";
+  $sql = "SELECT * FROM shopinfo WHERE shop_valid = 0 AND certified=0 ORDER BY $orderSql LIMIT $startItem, $perPage";
 }
 // 如果沒有搜尋參數也沒有分頁參數，顯示第一頁的結果
 else {
   $page = 1;
   $order = 1;
-  $sql = "SELECT * FROM shopinfo WHERE shop_valid = 1 AND certified=0 ORDER BY shop_id ASC LIMIT 0, $perPage";
+  $sql = "SELECT * FROM shopinfo WHERE shop_valid = 0 AND certified=0 ORDER BY shop_id ASC LIMIT 0, $perPage";
 }
 
 // 執行 SQL 查詢，並將結果存儲在 $result 變數中
@@ -128,7 +127,7 @@ $result = $conn->query($sql);
           <i class="bi bi-shop"></i>
           <span>商家管理</span></a>
       </li>
-            <!--側邊攔項目-->
+      <!--側邊攔項目-->
       <li class="nav-item active">
         <a class="nav-link" href="certificationtables.php">
           <i class="bi bi-patch-exclamation"></i>
@@ -136,8 +135,9 @@ $result = $conn->query($sql);
       </li>
 
       <!--側邊攔項目-->
+      <!--側邊攔項目-->
       <li class="nav-item">
-        <a class="nav-link" href="rejectCert.php">
+        <a class="nav-link" href="rejectCert.php?var=3">
           <i class="bi bi-arrow-repeat"></i>
           <span>複審核管理</span></a>
       </li>
@@ -297,11 +297,11 @@ $result = $conn->query($sql);
                 <div class="card-body">
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                      <div class="text-lg font-weight-bold text-primary text-uppercase mb-1">
                         所有店家
                       </div>
                       <div class="h5 mb-0 font-weight-bold text-gray-800">
-                        <?= $allshop ?>
+                        <?= $sqlAll ?> 家
                       </div>
                     </div>
                     <div class="col-auto">
@@ -318,15 +318,15 @@ $result = $conn->query($sql);
                 <div class="card-body">
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                      <div class="text-lg font-weight-bold text-success text-uppercase mb-1">
                         已認證店家
                       </div>
                       <div class="h5 mb-0 font-weight-bold text-gray-800">
-                        <?= $certshop ?>
+                        <?= $certshop ?> 家
                       </div>
                     </div>
                     <div class="col-auto">
-                      <i class="bi bi-patch-check-fill fa-2x text-green-800"></i>
+                      <i class="bi bi-check-all fa-3x text-green-800"></i>
                     </div>
                   </div>
                 </div>
@@ -335,23 +335,23 @@ $result = $conn->query($sql);
 
             <!-- Tasks Card Example -->
             <div class="col-xl-4 col-md-6 mb-4">
-              <div class="card border-left-info shadow h-100 py-2">
+              <div class="card border-left-info border-info shadow h-100 py-2">
                 <div class="card-body">
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                      <div class="text-lg font-weight-bold text-info text-uppercase mb-1">
                         等待認證中店家
                       </div>
                       <div class="row no-gutters align-items-center">
                         <div class="col-auto">
                           <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">
-                            <?= $totalshops ?>
+                            <?= $totalshops ?> 家
                           </div>
                         </div>
                       </div>
                     </div>
                     <div class="col-auto">
-                      <i class="bi bi-patch-exclamation-fill fa-2x text-red-800"></i>
+                      <i class="bi bi-exclamation-lg fa-3x text-info"></i>
                     </div>
                   </div>
                 </div>
@@ -369,12 +369,13 @@ $result = $conn->query($sql);
             ?>
           </div>
 
-          <?php if ($shopCount > 0) : ?>
-            <!-- DataTales Example -->
-            <div class="card shadow mb-4">
-              <div class="card-header d-flex align-items-center">
-                <h6 class="m-0 font-weight-bold text-primary">商家列表</h6>
-              </div>
+
+          <!-- DataTales Example -->
+          <div class="card shadow mb-4">
+            <div class="card-header d-flex align-items-center">
+              <h6 class="m-0 font-weight-bold text-primary">商家列表</h6>
+            </div>
+            <?php if ($shopCount > 0) : ?>
               <div class="overflow-auto">
                 <table class="table table-bordered text-nowrap table-striped">
                   <thead>
@@ -500,11 +501,10 @@ $result = $conn->query($sql);
 
               </div>
               <!-- 商家列表結束 -->
-            </div>
-          <?php else : ?>
-            <!-- 若無商家資料則顯示訊息 -->
-            目前無未認證商家
-          <?php endif; ?>
+          </div>
+        <?php else : ?>
+          <h1 class="text-center">目前尚無<span class="text-info">未認證</span>店家</h1>
+        <?php endif; ?>
         </div>
 
         <!-- 01 -->
@@ -523,7 +523,29 @@ $result = $conn->query($sql);
     <i class="fas fa-angle-up"></i>
   </a>
 
-
+  <!-- 登出彈出視窗 -->
+  <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">確定要離開嗎?</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          如果您準備結束目前會話，請選擇下面的「登出」。
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" data-dismiss="modal">
+            取消
+          </button>
+          <a class="btn btn-primary" href="login.php">登出</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- 登出彈出視窗結束 -->
 
   <!-- Bootstrap core JavaScript-->
   <script src="vendor/jquery/jquery.min.js"></script>

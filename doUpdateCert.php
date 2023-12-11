@@ -13,7 +13,8 @@ $id = $_GET["shop_id"];
 
 // 構建 SQL 更新語句
 $sql = "UPDATE shopinfo 
-        SET certified='1'
+        SET shop_valid='1',
+        certified='1'
         WHERE shop_id=$id";
 
 // 印出 SQL 語句，用於測試
