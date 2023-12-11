@@ -7,11 +7,6 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <?php
-    // 06css.php 檔案的內容可能是引入樣式表的 PHP 代碼或其他樣式相關的內容
-    include("06css.php");
-    ?>
-
 </head>
 
 <body>

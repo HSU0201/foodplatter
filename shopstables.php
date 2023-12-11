@@ -2,11 +2,23 @@
 // 引入與資料庫連接的文件
 require_once("foodplatter_connect.php");
 
-// 計算總商家數
+
+// 未認證店家
+$notCertTotal = "SELECT * FROM shopinfo WHERE shop_valid=0 AND certified=0";
+$resultnotcertTotal = $conn->query($notCertTotal);
+$notcertshops = $resultnotcertTotal->num_rows;
+
+
+
+// 計算總商家數(已認證店家)
 $sqlTotal = "SELECT * FROM shopinfo WHERE shop_valid=1 AND certified=1";
 $resultTotal = $conn->query($sqlTotal);
 // 取得總商家數量
 $totalshops = $resultTotal->num_rows;
+
+// 全部店家
+$sqlAllshop = $totalshops + $notcertshops;
+
 // 每頁顯示的商家數
 $perPage = 10;
 // 進行無條件進位的相除操作，計算總頁數
@@ -103,7 +115,7 @@ $result = $conn->query($sql);
           <button class="btn btn-secondary" type="button" data-dismiss="modal">
             取消
           </button>
-          <a class="btn btn-primary" href="login.php">登出</a>
+          <a class="btn btn-primary" href="doSignout.php">登出</a>
         </div>
       </div>
     </div>
@@ -147,7 +159,7 @@ $result = $conn->query($sql);
           <i class="bi bi-shop"></i>
           <span>商家管理</span></a>
       </li>
-            <!--側邊攔項目-->
+      <!--側邊攔項目-->
       <li class="nav-item">
         <a class="nav-link" href="certificationtables.php">
           <i class="bi bi-patch-exclamation"></i>
@@ -281,38 +293,102 @@ $result = $conn->query($sql);
 
         <!-- Begin Page Content -->
         <div class="container-fluid">
-          <!-- Page Heading -->
-          <h1 class="h3 mb-2 text-gray-800">商家管理</h1>
-          <p class="mb-4">
-            集中控制商家資訊、訂單、庫存、報告等功能，提升營運效率及資料整合。
-          </p>
-
-          <!-- 按鈕組 -->
-          <?php if (!isset($_GET["search"])) : ?>
-            <div class="d-flex justify-content-end">
-              <div class="btn-group m-2">
-                <a href="shopstables.php?page=<?= $page ?>&order=1" class="btn btn-success text-white <?php if ($order == 1) echo "active" ?>">
-                  id
-                  <i class="bi bi-sort-down-alt"></i>
-                </a>
-                <a href="shopstables.php?page=<?= $page ?>&order=2" class="btn btn-success text-white <?php if ($order == 2) echo "active" ?>">
-                  id
-                  <i class="bi bi-sort-up"></i>
-                </a>
+          <div class="d-flex justify-content-between">
+            <!-- Page Heading -->
+            <h1 class="h3 mb-2 text-gray-800">商家管理</h1>
+            <!-- 按鈕組 -->
+            <?php if (!isset($_GET["search"])) : ?>
+              <div class="d-flex justify-content-end">
+                <div class="btn-group m-2">
+                  <a href="shopstables.php?page=<?= $page ?>&order=1" class="btn btn-success text-white <?php if ($order == 1) echo "active" ?>">
+                    id
+                    <i class="bi bi-sort-down-alt"></i>
+                  </a>
+                  <a href="shopstables.php?page=<?= $page ?>&order=2" class="btn btn-success text-white <?php if ($order == 2) echo "active" ?>">
+                    id
+                    <i class="bi bi-sort-up"></i>
+                  </a>
+                </div>
+                <div class="btn-group m-2">
+                  <a href="shopstables.php?page=<?= $page ?>&order=3" class="btn btn-success text-white <?php if ($order == 3) echo "active" ?>">
+                    最後更新
+                    <i class="bi bi-sort-down-alt"></i>
+                  </a>
+                  <a href="shopstables.php?page=<?= $page ?>&order=4" class="btn btn-success text-white <?php if ($order == 4) echo "active" ?>">
+                    最後更新
+                    <i class="bi bi-sort-up"></i>
+                  </a>
+                </div>
               </div>
-              <div class="btn-group m-2">
-                <a href="shopstables.php?page=<?= $page ?>&order=3" class="btn btn-success text-white <?php if ($order == 3) echo "active" ?>">
-                  最後更新
-                  <i class="bi bi-sort-down-alt"></i>
-                </a>
-                <a href="shopstables.php?page=<?= $page ?>&order=4" class="btn btn-success text-white <?php if ($order == 4) echo "active" ?>">
-                  最後更新
-                  <i class="bi bi-sort-up"></i>
-                </a>
+            <?php endif; ?>
+            <!-- 按鈕組結束 -->
+          </div>
+
+          <div class="row">
+            <!-- Earnings (Monthly) Card Example -->
+            <div class="col-xl-4 col-md-6 mb-4 btn">
+              <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <div class="text-lg font-weight-bold text-primary text-uppercase mb-1">
+                        所有店家
+                      </div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800">
+                        <?= $sqlAllshop ?> 家
+                      </div>
+                    </div>
+                    <div class="col-auto">
+                      <i class="bi bi-shop fa-2x text-gray-500"></i>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
-          <?php endif; ?>
-          <!-- 按鈕組結束 -->
+
+            <!-- Earnings (Annual) Card Example -->
+            <a class="col-xl-4 col-md-6 mb-4 btn bg-success" href="shopstables.php">
+              <div class="card border-left-success border-success shadow h-100 py-2 btn-light">
+                <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <div class="text-lg font-weight-bold text-success text-uppercase mb-1">
+                        已認證店家
+                      </div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800">
+                        <?= $totalshops ?> 家
+                      </div>
+                    </div>
+                    <div class="col-auto">
+                      <i class="bi bi-check-all fa-3x text-green-800"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </a>
+
+            <!-- Earnings (Annual) Card Example -->
+            <a class="col-xl-4 col-md-6 mb-4 btn" href="certificationtables.php">
+              <div class="card border-left-info shadow h-100 py-2 btn-light">
+                <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <div class="text-lg font-weight-bold text-info text-uppercase mb-1">
+                        等待認證中店家
+                      </div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800">
+                        <?= $notcertshops ?> 家
+                      </div>
+                    </div>
+                    <div class="col-auto">
+                      <i class="bi bi-exclamation-lg fa-3x text-info"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div>
+
 
 
           <div>

@@ -56,7 +56,7 @@
           <i class="bi bi-shop"></i>
           <span>商家管理</span></a>
       </li>
-            <!--側邊攔項目-->
+      <!--側邊攔項目-->
       <li class="nav-item">
         <a class="nav-link" href="certificationtables.php">
           <i class="bi bi-patch-exclamation"></i>
@@ -166,7 +166,7 @@
         <!-- Begin Page Content -->
         <div class="container">
           <!-- Page Heading -->
-          <div class="d-sm-flex align-items-center justify-content-between mb-4">
+          <div class="d-sm-flex align-items-center justify-content-center mb-4">
             <h1 class="h3 mb-0 text-gray-800">優惠卷新增</h1>
           </div>
 
@@ -184,6 +184,26 @@
               <label for="coupon_code" class="form-label">優惠卷代碼</label>
               <input type="text" class="form-control" id="coupon_code" name="coupon_code" placeholder="請輸入優惠卷代碼" />
               <a type="button" class="btn text-info" onclick="generateRandomCode()">產生隨機代碼</a>
+              <!-- 登出彈出視窗結束 -->
+              <script>
+                function generateRandomCode() {
+                  // 生成隨機代碼的函數
+                  var randomCode = generateRandomString(10); // 這裡的8表示生成10位的亂碼，你可以根據需要調整
+
+                  // 將隨機代碼設置到input元素中
+                  document.getElementById('coupon_code').value = randomCode;
+                }
+
+                function generateRandomString(length) {
+                  var result = '';
+                  var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+                  var charactersLength = characters.length;
+                  for (var i = 0; i < length; i++) {
+                    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+                  }
+                  return result;
+                }
+              </script>
             </div>
             <div class="mb-3">
               <label for="coupon_threshold" class="form-label">優惠卷低消門檻(選填)</label>
@@ -232,16 +252,12 @@
             </div>
 
             <!-- 儲存和取消按鈕 -->
-            <div class="py-2 d-flex justify-content-between">
-                <div>
-                  <button class="btn btn-info text-white" type="submit">儲存</button>
-                  <a class="btn btn-info text-white" href="coupons.php">取消</a>
-                </div>
-                <div>
-                  <!-- 刪除按鈕，觸發刪除確認視窗 -->
-                  <button type="button" data-bs-toggle="modal" data-bs-target="#alertModal" class="btn btn-danger">刪除</button>
-                </div>
+            <div class="py-2 d-flex justify-content-end">
+              <div>                
+                <a class="btn btn-success text-white" href="coupons.php">取消</a>
+                <button class="mx-3 btn btn-success text-white" type="submit">儲存</button>
               </div>
+            </div>
           </form>
 
           <!-- ******************************************************** -->
@@ -286,31 +302,12 @@
           <button class="btn btn-secondary" type="button" data-dismiss="modal">
             取消
           </button>
-          <a class="btn btn-primary" href="login.php">登出</a>
+          <a class="btn btn-primary" href="doSignout.php">登出</a>
         </div>
       </div>
     </div>
   </div>
-  <!-- 登出彈出視窗結束 -->
-  <script>
-    function generateRandomCode() {
-      // 生成隨機代碼的函數
-      var randomCode = generateRandomString(10); // 這裡的8表示生成10位的亂碼，你可以根據需要調整
 
-      // 將隨機代碼設置到input元素中
-      document.getElementById('sss').value = randomCode;
-    }
-
-    function generateRandomString(length) {
-      var result = '';
-      var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-      var charactersLength = characters.length;
-      for (var i = 0; i < length; i++) {
-        result += characters.charAt(Math.floor(Math.random() * charactersLength));
-      }
-      return result;
-    }
-  </script>
   <!-- Bootstrap core JavaScript-->
   <script src="vendor/jquery/jquery.min.js"></script>
   <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>

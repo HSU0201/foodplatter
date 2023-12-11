@@ -369,7 +369,7 @@ $couponCount = $result->num_rows;
           <button class="btn btn-secondary" type="button" data-dismiss="modal">
             取消
           </button>
-          <a class="btn btn-primary" href="login.php">登出</a>
+          <a class="btn btn-primary" href="doSignout.php">登出</a>
         </div>
       </div>
     </div>

@@ -1,3 +1,21 @@
+<?php
+// 引入與資料庫連接的文件
+require_once("foodplatter_connect.php");
+
+// 計算總商家數
+$sqlShopTotal = "SELECT * FROM shopinfo WHERE shop_valid=1 AND certified=1";
+$shopTotal = $conn->query($sqlShopTotal);
+// 取得總商家數量
+$resultShopTotal = $shopTotal->num_rows;
+
+// 計算總會員數
+$sqlUserTotal = "SELECT * FROM users WHERE user_valid=1";
+$userTotal = $conn->query($sqlUserTotal);
+// 取得總會員數量
+$resultUserTotal = $userTotal->num_rows;
+
+$resultTotal=$resultShopTotal+$resultUserTotal;
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -55,7 +73,7 @@
         <a class="nav-link" href="shopstables.php">
           <i class="bi bi-shop"></i>
           <span>商家管理</span></a>
-              <!--側邊攔項目-->
+        <!--側邊攔項目-->
       <li class="nav-item">
         <a class="nav-link" href="certificationtables.php">
           <i class="bi bi-patch-exclamation"></i>
@@ -171,116 +189,70 @@
           <!-- Content Row -->
           <div class="row">
             <!-- Earnings (Monthly) Card Example -->
-            <div class="col-xl-4 col-md-6 mb-4">
-              <div class="card border-left-primary shadow h-100 py-2">
+            <a class="col-xl-4 col-md-6 mb-4 btn">
+              <div class="card border-left-primary shadow h-100 py-2 btn-light">
                 <div class="card-body">
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                      <div class="text-lg font-weight-bold text-primary text-uppercase mb-1">
+                        總用戶數
+                      </div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800">
+                      <?=$resultTotal?>
+                      </div>
+                    </div>
+                    <div class="col-auto">
+                      <i class="bi bi-person-rolodex fa-2x text-primary"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </a>
+
+            <!-- Earnings (Monthly) Card Example -->
+            <a class="col-xl-4 col-md-6 mb-4 btn" href="shopstables.php">
+              <div class="card border-left-info shadow h-100 py-2 btn-light">
+                <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <div class="text-lg font-weight-bold text-info text-uppercase mb-1">
+                        商家數
+                      </div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800">
+                        <?=$resultShopTotal?> 家
+                      </div>
+                    </div>
+                    <div class="col-auto">
+                      <i class="bi bi-cart2 fa-2x text-info"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </a>
+
+            <!-- Earnings (Monthly) Card Example -->
+            <a class="col-xl-4 col-md-6 mb-4 btn " href="userstables.php">
+              <div class="card border-left-success shadow h-100 py-2 btn-light">
+                <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <div class="text-lg font-weight-bold text-success text-uppercase mb-1">
                         會員人數
                       </div>
                       <div class="h5 mb-0 font-weight-bold text-gray-800">
-                        40,000
+                        <?=$resultUserTotal?> 人
                       </div>
                     </div>
                     <div class="col-auto">
-                      <i class="bi bi-person-rolodex fa-2x text-gray-300"></i>
+                      <i class="bi bi-person-circle fa-2x text-success"></i>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-
-            <!-- Earnings (Monthly) Card Example -->
-            <div class="col-xl-4 col-md-6 mb-4">
-              <div class="card border-left-success shadow h-100 py-2">
-                <div class="card-body">
-                  <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                        商家人數
-                      </div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800">
-                        15,000
-                      </div>
-                    </div>
-                    <div class="col-auto">
-                      <i class="bi bi-shop fa-2x text-gray-300"></i>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Earnings (Monthly) Card Example -->
-            <div class="col-xl-4 col-md-6 mb-4">
-              <div class="card border-left-info shadow h-100 py-2">
-                <div class="card-body">
-                  <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-                        優惠卷數量
-                      </div>
-                      <div class="row no-gutters align-items-center">
-                        <div class="col-auto">
-                          <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">
-                            50
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-auto">
-                      <i class="bi bi-ticket-perforated fa-2x text-gray-300"></i>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+            </a>
           </div>
 
-          <!-- Content Row -->
-          <div class="row">
-            <!-- Pie Chart -->
-            <div class="col-xl-4 col-lg-5">
-              <div class="card shadow mb-4">
-                <!-- Card Header - Dropdown -->
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                  <h6 class="m-0 font-weight-bold text-primary">
-                    Revenue Sources
-                  </h6>
-                  <div class="dropdown no-arrow">
-                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
-                      <div class="dropdown-header">Dropdown Header:</div>
-                      <a class="dropdown-item" href="#">Action</a>
-                      <a class="dropdown-item" href="#">Another action</a>
-                      <div class="dropdown-divider"></div>
-                      <a class="dropdown-item" href="#">Something else here</a>
-                    </div>
-                  </div>
-                </div>
-                <!-- Card Body -->
-                <div class="card-body">
-                  <div class="chart-pie pt-4 pb-2">
-                    <canvas id="myPieChart"></canvas>
-                  </div>
-                  <div class="mt-4 text-center small">
-                    <span class="mr-2">
-                      <i class="fas fa-circle text-primary"></i> Direct
-                    </span>
-                    <span class="mr-2">
-                      <i class="fas fa-circle text-success"></i> Social
-                    </span>
-                    <span class="mr-2">
-                      <i class="fas fa-circle text-info"></i> Referral
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+
         </div>
         <!-- /.container-fluid -->
       </div>
@@ -322,7 +294,7 @@
           <button class="btn btn-secondary" type="button" data-dismiss="modal">
             取消
           </button>
-          <a class="btn btn-primary" href="login.php">登出</a>
+          <a class="btn btn-primary" href="doSignout.php">登出</a>
         </div>
       </div>
     </div>

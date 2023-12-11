@@ -135,7 +135,6 @@ $result = $conn->query($sql);
       </li>
 
       <!--側邊攔項目-->
-      <!--側邊攔項目-->
       <li class="nav-item">
         <a class="nav-link" href="rejectCert.php?var=3">
           <i class="bi bi-arrow-repeat"></i>
@@ -292,7 +291,7 @@ $result = $conn->query($sql);
 
           <div class="row">
             <!-- Earnings (Monthly) Card Example -->
-            <div class="col-xl-4 col-md-6 mb-4">
+            <div class="col-xl-4 col-md-6 mb-4 btn">
               <div class="card border-left-primary shadow h-100 py-2">
                 <div class="card-body">
                   <div class="row no-gutters align-items-center">
@@ -313,8 +312,8 @@ $result = $conn->query($sql);
             </div>
 
             <!-- Earnings (Annual) Card Example -->
-            <div class="col-xl-4 col-md-6 mb-4">
-              <div class="card border-left-success shadow h-100 py-2">
+            <a class="col-xl-4 col-md-6 mb-4 btn" href="shopstables.php">
+              <div class="card border-left-success shadow h-100 py-2 btn-light">
                 <div class="card-body">
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
@@ -331,32 +330,28 @@ $result = $conn->query($sql);
                   </div>
                 </div>
               </div>
-            </div>
+            </a>
 
-            <!-- Tasks Card Example -->
-            <div class="col-xl-4 col-md-6 mb-4">
-              <div class="card border-left-info border-info shadow h-100 py-2">
+            <!-- Earnings (Annual) Card Example -->
+            <a class="col-xl-4 col-md-6 mb-4 btn bg-info" href="certificationtables.php">
+              <div class="card border-left-info border-info shadow h-100 py-2 btn-light ">
                 <div class="card-body">
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                       <div class="text-lg font-weight-bold text-info text-uppercase mb-1">
-                        等待認證中店家
+                      等待認證中店家
                       </div>
-                      <div class="row no-gutters align-items-center">
-                        <div class="col-auto">
-                          <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">
-                            <?= $totalshops ?> 家
-                          </div>
-                        </div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800">
+                      <?= $totalshops ?> 家
                       </div>
                     </div>
                     <div class="col-auto">
-                      <i class="bi bi-exclamation-lg fa-3x text-info"></i>
+                    <i class="bi bi-exclamation-lg fa-3x text-info"></i>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
+            </a>
           </div>
 
 
@@ -540,7 +535,7 @@ $result = $conn->query($sql);
           <button class="btn btn-secondary" type="button" data-dismiss="modal">
             取消
           </button>
-          <a class="btn btn-primary" href="login.php">登出</a>
+          <a class="btn btn-primary" href="doSignout.php">登出</a>
         </div>
       </div>
     </div>
