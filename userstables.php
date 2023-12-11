@@ -120,7 +120,7 @@ $result = $conn->query($sql);
           <i class="bi bi-shop"></i>
           <span>商家管理</span></a>
       </li>
-            <!--側邊攔項目-->
+      <!--側邊攔項目-->
       <li class="nav-item">
         <a class="nav-link" href="certificationtables.php">
           <i class="bi bi-patch-exclamation"></i>
@@ -205,7 +205,7 @@ $result = $conn->query($sql);
               <?php if (isset($_GET["search"])) : ?>
                 搜尋 <p class="text-success"> <?= $_GET["search"] ?> </p> 的結果,
               <?php endif; ?>
-              共<?= $userCount ?>家
+              本頁有<?= $userCount ?>人
             </div>
           </div>
 
@@ -319,7 +319,10 @@ $result = $conn->query($sql);
                       <tr>
                         <td class="align-middle text-center"><?= $row["user_id"] ?></td>
                         <td class="align-middle text-center"><?= $row["user_name"] ?></td>
-                        <td class="align-middle text-center"><?= $row["user_sex"] ?></td>
+                        <td class="align-middle text-center">
+                        <?= $row["user_sex"] == 1 ? '女' : ($row["user_sex"] == 0 ? '男' : '其他') ?>
+
+                        </td>
                         <td class="align-middle text-center"><?= $row["user_birth"] ?></td>
                         <td class="align-middle text-center"><?= $row["user_email"] ?></td>
                         <td class="align-middle text-center">0<?= $row["user_phone"] ?></td>
@@ -332,36 +335,37 @@ $result = $conn->query($sql);
                         <td class="align-middle text-center"><?= $row["created_at"] ?></td>
                         <td class="align-middle text-center"><?= $row["modified_at"] ?></td>
                         <td class="align-middle text-center">
-                          <a class="btn btn-outline-dark mx-1" href="#" title="修改會員資料"><i class="bi bi-pencil-square"></i></a>
+                          <a class="btn btn-outline-dark mx-1" href="usersindex.php?user_id=<?= $row["user_id"] ?>" title="會員詳細資料"><i class="bi bi-info-circle"></i></a>
                           <!-- 刪除按鈕，觸發刪除確認視窗 -->
                           <a class="btn btn-outline-danger mx-1" title="刪除會員資料" type="button" data-toggle="modal" data-target="#exampleModalLong"><i class="bi bi-trash"></i></a>
-                        </td>
-                      </tr>
-                      <!-- 刪除彈出視窗 -->
-                      <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="deletetable" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                          <div class="modal-content">
-                            <div class="modal-header">
-                              <h5 class="modal-title" id="deletetable">移除會員</h5>
-                              <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">×</span>
-                              </button>
-                            </div>
-                            <div class="modal-body">
-                              確認要移除會員嗎?
-                            </div>
-                            <div class="modal-footer">
-                              <a class="btn btn-secondary" type="button" data-dismiss="modal">
-                                取消
-                              </a>
-                              <a class="btn btn-primary" href="doDeleteUser.php?user_id=<?= $row["user_id"] ?>">
-                                移除
-                              </a>
+                        </td> 
+                        <!-- 刪除彈出視窗 -->
+                        <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="deletetable" aria-hidden="true">
+                          <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title" id="deletetable">移除會員</h5>
+                                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true">×</span>
+                                </button>
+                              </div>
+                              <div class="modal-body">
+                                確認要移除會員嗎?
+                              </div>
+                              <div class="modal-footer">
+                                <a class="btn btn-secondary" type="button" data-dismiss="modal">
+                                  取消
+                                </a>
+                                <a class="btn btn-primary" href="doDeleteUser.php?user_id=<?= $row["user_id"] ?>">
+                                  移除<?= $row["user_id"] ?>
+                                </a>
+                              </div>
                             </div>
                           </div>
                         </div>
-                      </div>
-                      <!-- 刪除彈出視窗結束 -->
+                        <!-- 刪除彈出視窗結束 -->
+                      </tr>
+
                     <?php endforeach; ?>
                   </tbody>
                 </table>
@@ -392,11 +396,6 @@ $result = $conn->query($sql);
             目前無此會員
           <?php endif; ?>
         </div>
-        <!-- 01 -->
-        <div class="btn-group me-2" role="group" aria-label="First group">
-          <button type="button" class="btn btn-outline-secondary">1</button>
-        </div>
-        <!-- 01 -->
       </div>
       <!-- /.container-fluid -->
     </div>

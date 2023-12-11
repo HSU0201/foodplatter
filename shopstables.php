@@ -246,7 +246,7 @@ $result = $conn->query($sql);
               <?php if (isset($_GET["search"])) : ?>
                 搜尋 <p class="text-success"> <?= $_GET["search"] ?> </p> 的結果,
               <?php endif; ?>
-              共<?= $totalshops ?>家
+              本頁有<?= $shopCount ?>家
             </div>
           </div>
 
