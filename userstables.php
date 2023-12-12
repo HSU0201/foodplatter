@@ -289,7 +289,7 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
           <div>
             <?php
             // $rows = $result->fetch_all(MYSQLI_BOTH);
-           
+
             // var_dump($rows);
             ?>
           </div>
@@ -323,7 +323,7 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
                         <td class="align-middle text-center"><?= $row["user_id"] ?></td>
                         <td class="align-middle text-center"><?= $row["user_name"] ?></td>
                         <td class="align-middle text-center">
-                        <?= $row["user_sex"] == 1 ? '女' : ($row["user_sex"] == 0 ? '男' : '其他') ?>
+                          <?= $row["user_sex"] == 1 ? '女' : ($row["user_sex"] == 0 ? '男' : '其他') ?>
 
                         </td>
                         <td class="align-middle text-center"><?= $row["user_birth"] ?></td>
@@ -340,11 +340,10 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
                         <td class="align-middle text-center">
                           <a class="btn btn-outline-dark mx-1" href="usersindex.php?user_id=<?= $row["user_id"] ?>" title="會員詳細資料"><i class="bi bi-info-circle"></i></a>
                           <!-- 刪除按鈕，觸發刪除確認視窗 -->
-                          <a class="btn btn-outline-danger mx-1" title="刪除會員資料" type="button" data-toggle="modal" data-target="#exampleModalLong"><i class="bi bi-trash"></i></a>
-                          <?= $row["user_id"] ?>
-                        </td> 
+                          <a id="fuck" class="btn btn-outline-danger mx-1" title="刪除會員資料" type="button" data-toggle="modal" data-target="#exampleModalLong<?= $row["user_id"] ?>"><i class="bi bi-trash"></i></a>
+                        </td>
                         <!-- 刪除彈出視窗 -->
-                        <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="deletetable" aria-hidden="true">
+                        <div class="modal fade" id="exampleModalLong<?= $row["user_id"] ?>" tabindex="-1" role="dialog" aria-labelledby="deletetable" aria-hidden="true">
                           <div class="modal-dialog" role="document">
                             <div class="modal-content">
                               <div class="modal-header">
@@ -360,14 +359,20 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
                                 <a class="btn btn-secondary" type="button" data-dismiss="modal">
                                   取消
                                 </a>
-                                <a class="btn btn-primary" href="doDeleteUser.php?user_id=<?= $row["user_id"] ?>">
-                                  移除<?= $row["user_id"] ?>
+                                <a class="btn btn-primary"  href="doDeleteUser.php?user_id=<?= $row["user_id"] ?>">
+                                  移除
                                 </a>
                               </div>
                             </div>
                           </div>
                         </div>
                         <!-- 刪除彈出視窗結束 -->
+                        <script>
+                          function trigger() {
+                            var fuckbtn = document.getElementById("fuck");
+                            fuckbtn.click();
+                          }
+                        </script>
                       </tr>
                     <?php endforeach; ?>
                   </tbody>
@@ -427,7 +432,7 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
         </div>
         <div class="modal-footer">
           <button class="btn btn-secondary" type="button" data-dismiss="modal">
-            取消
+            取消<?= $row["user_id"] ?>
           </button>
           <a class="btn btn-primary" href="doSignout.php">登出</a>
         </div>
@@ -435,6 +440,7 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
     </div>
   </div>
   <!-- 登出彈出視窗結束 -->
+
   <!-- Bootstrap core JavaScript-->
   <script src="vendor/jquery/jquery.min.js"></script>
   <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>

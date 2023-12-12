@@ -453,11 +453,11 @@ $result = $conn->query($sql);
                         <td class="align-middle text-center">
                           <a class="btn btn-outline-dark mx-1" href="coupons-edit.php?coupon_id=<?= $row["coupon_id"] ?>" title="修改優惠卷"><i class="bi bi-pencil-square"></i></a>
                           <!-- 刪除按鈕，觸發刪除確認視窗 -->
-                          <a class="btn btn-danger mx-1" title="刪除優惠卷" type="button" data-toggle="modal" data-target="#exampleModalLong"><i class="bi bi-ban"></i></a>
+                          <a class="btn btn-danger mx-1" title="刪除優惠卷" type="button" data-toggle="modal" data-target="#exampleModalLong<?= $row["coupon_id"] ?>"><i class="bi bi-ban"></i></a>
                         </td>
                       </tr>
                       <!-- 刪除彈出視窗 -->
-                      <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="deletetable" aria-hidden="true">
+                      <div class="modal fade" id="exampleModalLong<?= $row["coupon_id"] ?>" tabindex="-1" role="dialog" aria-labelledby="deletetable" aria-hidden="true">
                         <div class="modal-dialog" role="document">
                           <div class="modal-content">
                             <div class="modal-header">

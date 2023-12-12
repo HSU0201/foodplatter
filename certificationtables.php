@@ -443,11 +443,11 @@ $result = $conn->query($sql);
                         <td class="align-middle text-center">
                           <a class="btn btn-success mx-1" href="doUpdateCert.php?shop_id=<?= $row["shop_id"] ?>" title="通過認證"><i class="bi bi-check-lg"></i></a>
                           <!-- 刪除按鈕，觸發刪除確認視窗 -->
-                          <a class="btn btn-danger mx-1" title="不通過認證" type="button" data-toggle="modal" data-target="#exampleModalLong"><i class="bi bi-ban"></i></a>
+                          <a class="btn btn-danger mx-1" title="不通過認證" type="button" data-toggle="modal" data-target="#exampleModalLong<?= $row["shop_id"] ?>"><i class="bi bi-ban"></i></a>
                         </td>
                       </tr>
                       <!-- 刪除彈出視窗 -->
-                      <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="deletetable" aria-hidden="true">
+                      <div class="modal fade" id="exampleModalLong<?= $row["shop_id"] ?>" tabindex="-1" role="dialog" aria-labelledby="deletetable" aria-hidden="true">
                         <div class="modal-dialog" role="document">
                           <div class="modal-content">
                             <div class="modal-header">
